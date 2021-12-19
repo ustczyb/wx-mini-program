@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.config;
+package com.tencent.wxcloudrun.model.DO;
 
 import lombok.Data;
 
@@ -8,12 +8,12 @@ import java.util.HashMap;
 public final class ApiResponse {
 
   private Integer code;
-  private String errorMsg;
+  private String msg;
   private Object data;
 
   private ApiResponse(int code, String errorMsg, Object data) {
     this.code = code;
-    this.errorMsg = errorMsg;
+    this.msg = errorMsg;
     this.data = data;
   }
   
