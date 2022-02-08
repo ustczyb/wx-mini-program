@@ -76,7 +76,7 @@ public class CounterController {
             counterService.clearCount(1);
             return ApiResponse.ok(0);
         } else {
-            return ApiResponse.error("参数action错误");
+            return ApiResponse.error(1,"参数action错误");
         }
     }
 

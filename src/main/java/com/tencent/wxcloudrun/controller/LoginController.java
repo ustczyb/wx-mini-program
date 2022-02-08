@@ -1,9 +1,13 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.common.ApiResponse;
+import com.tencent.wxcloudrun.model.common.OpenidResponse;
 import com.tencent.wxcloudrun.model.common.login.*;
+import com.tencent.wxcloudrun.service.LoginService;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
@@ -13,6 +17,19 @@ import org.springframework.web.bind.annotation.RestController;
 public class LoginController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(CounterController.class);
+
+    @Autowired
+    private LoginService loginService;
+
+    @GetMapping(value = "/login/openid")
+    public ApiResponse getOpenid(String jsCode) {
+        OpenidResponse response = loginService.fetchOpenid(jsCode);
+        if (StringUtils.isNotEmpty(response.getOpenId())) {
+            return ApiResponse.ok(response.getOpenId());
+        } else {
+            return ApiResponse.error(-1, "fetch openid error");
+        }
+    }
 
     /**
      * "getSession": {

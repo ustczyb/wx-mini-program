@@ -28,4 +28,15 @@ public class RunTest {
         user.setCtime(new Date());
         userMapper.insert(user);
     }
+
+    @Test
+    public void updateUser() {
+        User user = new User();
+        user.setId(1L);
+        user.setName("小黑");
+        user.setGender((byte) 1);
+        user.setPhone("1234567890");
+        user.setCtime(new Date());
+        userMapper.updateByPrimaryKeySelective(user);
+    }
 }

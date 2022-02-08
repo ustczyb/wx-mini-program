@@ -25,7 +25,7 @@ public final class ApiResponse {
     return new ApiResponse(0, "", data);
   }
 
-  public static ApiResponse error(String errorMsg) {
+  public static ApiResponse error(int code, String errorMsg) {
     return new ApiResponse(0, errorMsg, new HashMap<>());
   }
 }
