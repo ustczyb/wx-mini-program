@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.model.DO.login;
+package com.tencent.wxcloudrun.model.common.login;
 
 import lombok.Builder;
 import lombok.Data;

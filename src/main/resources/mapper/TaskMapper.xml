@@ -1,0 +1,248 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencent.wxcloudrun.dao.TaskMapper">
+  <resultMap id="BaseResultMap" type="com.tencent.wxcloudrun.model.DO.Task">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="group_id" jdbcType="BIGINT" property="groupId" />
+    <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
+    <result column="valid" jdbcType="TINYINT" property="valid" />
+    <result column="state" jdbcType="INTEGER" property="state" />
+    <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="trigger_type" jdbcType="TINYINT" property="triggerType" />
+    <result column="task_type" jdbcType="TINYINT" property="taskType" />
+    <result column="except_start_time" jdbcType="TIMESTAMP" property="exceptStartTime" />
+    <result column="actual_start_time" jdbcType="TIMESTAMP" property="actualStartTime" />
+    <result column="except_finished_time" jdbcType="TIMESTAMP" property="exceptFinishedTime" />
+    <result column="actual_finished_time" jdbcType="TIMESTAMP" property="actualFinishedTime" />
+    <result column="bbs_id" jdbcType="BIGINT" property="bbsId" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="utime" jdbcType="TIMESTAMP" property="utime" />
+  </resultMap>
+  <resultMap extends="BaseResultMap" id="ResultMapWithBLOBs" type="com.tencent.wxcloudrun.model.DO.Task">
+    <result column="content" jdbcType="LONGVARCHAR" property="content" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, group_id, create_user_id, valid, state, title, trigger_type, task_type, except_start_time, 
+    actual_start_time, except_finished_time, actual_finished_time, bbs_id, ctime, utime
+  </sql>
+  <sql id="Blob_Column_List">
+    content
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select 
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_table
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from task_table
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.Task">
+    insert into task_table (id, group_id, create_user_id, 
+      valid, state, title, 
+      trigger_type, task_type, except_start_time, 
+      actual_start_time, except_finished_time, 
+      actual_finished_time, bbs_id, ctime, 
+      utime, content)
+    values (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, 
+      #{valid,jdbcType=TINYINT}, #{state,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{triggerType,jdbcType=TINYINT}, #{taskType,jdbcType=TINYINT}, #{exceptStartTime,jdbcType=TIMESTAMP}, 
+      #{actualStartTime,jdbcType=TIMESTAMP}, #{exceptFinishedTime,jdbcType=TIMESTAMP}, 
+      #{actualFinishedTime,jdbcType=TIMESTAMP}, #{bbsId,jdbcType=BIGINT}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{utime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
+  </insert>
+  <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.Task">
+    insert into task_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="groupId != null">
+        group_id,
+      </if>
+      <if test="createUserId != null">
+        create_user_id,
+      </if>
+      <if test="valid != null">
+        valid,
+      </if>
+      <if test="state != null">
+        state,
+      </if>
+      <if test="title != null">
+        title,
+      </if>
+      <if test="triggerType != null">
+        trigger_type,
+      </if>
+      <if test="taskType != null">
+        task_type,
+      </if>
+      <if test="exceptStartTime != null">
+        except_start_time,
+      </if>
+      <if test="actualStartTime != null">
+        actual_start_time,
+      </if>
+      <if test="exceptFinishedTime != null">
+        except_finished_time,
+      </if>
+      <if test="actualFinishedTime != null">
+        actual_finished_time,
+      </if>
+      <if test="bbsId != null">
+        bbs_id,
+      </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="utime != null">
+        utime,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="groupId != null">
+        #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null">
+        #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="valid != null">
+        #{valid,jdbcType=TINYINT},
+      </if>
+      <if test="state != null">
+        #{state,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null">
+        #{triggerType,jdbcType=TINYINT},
+      </if>
+      <if test="taskType != null">
+        #{taskType,jdbcType=TINYINT},
+      </if>
+      <if test="exceptStartTime != null">
+        #{exceptStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualStartTime != null">
+        #{actualStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exceptFinishedTime != null">
+        #{exceptFinishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualFinishedTime != null">
+        #{actualFinishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bbsId != null">
+        #{bbsId,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null">
+        #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tencent.wxcloudrun.model.DO.Task">
+    update task_table
+    <set>
+      <if test="groupId != null">
+        group_id = #{groupId,jdbcType=BIGINT},
+      </if>
+      <if test="createUserId != null">
+        create_user_id = #{createUserId,jdbcType=BIGINT},
+      </if>
+      <if test="valid != null">
+        valid = #{valid,jdbcType=TINYINT},
+      </if>
+      <if test="state != null">
+        state = #{state,jdbcType=INTEGER},
+      </if>
+      <if test="title != null">
+        title = #{title,jdbcType=VARCHAR},
+      </if>
+      <if test="triggerType != null">
+        trigger_type = #{triggerType,jdbcType=TINYINT},
+      </if>
+      <if test="taskType != null">
+        task_type = #{taskType,jdbcType=TINYINT},
+      </if>
+      <if test="exceptStartTime != null">
+        except_start_time = #{exceptStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualStartTime != null">
+        actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="exceptFinishedTime != null">
+        except_finished_time = #{exceptFinishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="actualFinishedTime != null">
+        actual_finished_time = #{actualFinishedTime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="bbsId != null">
+        bbs_id = #{bbsId,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null">
+        utime = #{utime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=LONGVARCHAR},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tencent.wxcloudrun.model.DO.Task">
+    update task_table
+    set group_id = #{groupId,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      valid = #{valid,jdbcType=TINYINT},
+      state = #{state,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      trigger_type = #{triggerType,jdbcType=TINYINT},
+      task_type = #{taskType,jdbcType=TINYINT},
+      except_start_time = #{exceptStartTime,jdbcType=TIMESTAMP},
+      actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+      except_finished_time = #{exceptFinishedTime,jdbcType=TIMESTAMP},
+      actual_finished_time = #{actualFinishedTime,jdbcType=TIMESTAMP},
+      bbs_id = #{bbsId,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      utime = #{utime,jdbcType=TIMESTAMP},
+      content = #{content,jdbcType=LONGVARCHAR}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.Task">
+    update task_table
+    set group_id = #{groupId,jdbcType=BIGINT},
+      create_user_id = #{createUserId,jdbcType=BIGINT},
+      valid = #{valid,jdbcType=TINYINT},
+      state = #{state,jdbcType=INTEGER},
+      title = #{title,jdbcType=VARCHAR},
+      trigger_type = #{triggerType,jdbcType=TINYINT},
+      task_type = #{taskType,jdbcType=TINYINT},
+      except_start_time = #{exceptStartTime,jdbcType=TIMESTAMP},
+      actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
+      except_finished_time = #{exceptFinishedTime,jdbcType=TIMESTAMP},
+      actual_finished_time = #{actualFinishedTime,jdbcType=TIMESTAMP},
+      bbs_id = #{bbsId,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      utime = #{utime,jdbcType=TIMESTAMP}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

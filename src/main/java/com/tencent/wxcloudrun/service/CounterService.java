@@ -1,6 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
-import com.tencent.wxcloudrun.model.DO.counter.Counter;
+import com.tencent.wxcloudrun.model.DO.Counter;
 
 import java.util.Optional;
 

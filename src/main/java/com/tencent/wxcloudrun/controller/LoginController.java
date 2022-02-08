@@ -1,7 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.tencent.wxcloudrun.model.DO.ApiResponse;
-import com.tencent.wxcloudrun.model.DO.login.*;
+import com.tencent.wxcloudrun.model.common.ApiResponse;
+import com.tencent.wxcloudrun.model.common.login.*;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.web.bind.annotation.GetMapping;

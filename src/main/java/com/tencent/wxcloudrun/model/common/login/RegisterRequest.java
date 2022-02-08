@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.model.DO.login;
+package com.tencent.wxcloudrun.model.common.login;
 
 import lombok.Data;
 
@@ -6,8 +6,6 @@ import lombok.Data;
 public class RegisterRequest {
 
     private String sessionId;
-
-    private String userId;
 
     private String phone;
 

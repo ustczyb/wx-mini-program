@@ -1,4 +1,4 @@
-package com.tencent.wxcloudrun.model.DO;
+package com.tencent.wxcloudrun.model.common;
 
 import lombok.Data;
 

@@ -1,8 +1,8 @@
 package com.tencent.wxcloudrun.controller;
 
-import com.tencent.wxcloudrun.model.DO.ApiResponse;
+import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.model.DTO.counter.CounterRequest;
-import com.tencent.wxcloudrun.model.DO.counter.Counter;
+import com.tencent.wxcloudrun.model.DO.Counter;
 import com.tencent.wxcloudrun.service.CounterService;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
