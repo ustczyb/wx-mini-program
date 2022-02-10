@@ -7,7 +7,7 @@ spring:
       suffix: .html
       prefix: /
   profiles:
-    active: dev
+    active: prod
 
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml
