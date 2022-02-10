@@ -2,12 +2,13 @@ package com.tencent.wxcloudrun.model.DO;
 
 import lombok.Builder;
 import lombok.experimental.Tolerate;
+import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Builder
 public class User {
-    private Long id;
+    private Long userId;
 
     private String openId;
 
@@ -17,6 +18,7 @@ public class User {
 
     private Byte gender;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String addrProvince;
@@ -36,12 +38,12 @@ public class User {
     @Tolerate
     public User() {}
 
-    public Long getId() {
-        return id;
+    public Long getUserId() {
+        return userId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setUserId(Long userId) {
+        this.userId = userId;
     }
 
     public String getOpenId() {

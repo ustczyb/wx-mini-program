@@ -2,10 +2,8 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.DO.User;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
-import com.tencent.wxcloudrun.model.common.OpenidResponse;
 import com.tencent.wxcloudrun.model.common.login.*;
 import com.tencent.wxcloudrun.service.LoginService;
-import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +20,7 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @PostMapping(value = "/login/dologin")
+    @PostMapping(value = "/login/login")
     public ApiResponse getOpenid(String jsCode) {
         User userInfo = loginService.login(jsCode);
         if (userInfo != null) {

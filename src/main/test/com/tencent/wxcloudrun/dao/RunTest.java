@@ -32,7 +32,7 @@ public class RunTest {
     @Test
     public void updateUser() {
         User user = new User();
-        user.setId(1L);
+        user.setUserId(1L);
         user.setName("小黑");
         user.setGender((byte) 1);
         user.setPhone("1234567890");
