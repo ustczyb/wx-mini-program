@@ -7,17 +7,30 @@
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="name" jdbcType="VARCHAR" property="name" />
     <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="birthday" jdbcType="DATE" property="birthday" />
+    <result column="addr_province" jdbcType="VARCHAR" property="addrProvince" />
+    <result column="addr_city" jdbcType="VARCHAR" property="addrCity" />
+    <result column="addr_region" jdbcType="VARCHAR" property="addrRegion" />
+    <result column="job" jdbcType="VARCHAR" property="job" />
+    <result column="sign" jdbcType="VARCHAR" property="sign" />
     <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
     <result column="utime" jdbcType="TIMESTAMP" property="utime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, open_id, phone, name, gender, ctime, utime
+    id, open_id, phone, name, gender, birthday, addr_province, addr_city, addr_region, 
+    job, sign, ctime, utime
   </sql>
-  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+  <select id="selectByUserId" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
     <include refid="Base_Column_List" />
     from user_table
     where id = #{id,jdbcType=BIGINT}
+  </select>
+  <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_table
+    where open_id = #{open_id,jdbcType=VARCHAR}
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from user_table
@@ -25,10 +38,14 @@
   </delete>
   <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.User">
     insert into user_table (id, open_id, phone, 
-      name, gender, ctime, 
+      name, gender, birthday, 
+      addr_province, addr_city, addr_region, 
+      job, sign, ctime, 
       utime)
     values (#{id,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR}, 
-      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{birthday,jdbcType=DATE}, 
+      #{addrProvince,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, #{addrRegion,jdbcType=VARCHAR}, 
+      #{job,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, 
       #{utime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.User">
@@ -48,6 +65,24 @@
       </if>
       <if test="gender != null">
         gender,
+      </if>
+      <if test="birthday != null">
+        birthday,
+      </if>
+      <if test="addrProvince != null">
+        addr_province,
+      </if>
+      <if test="addrCity != null">
+        addr_city,
+      </if>
+      <if test="addrRegion != null">
+        addr_region,
+      </if>
+      <if test="job != null">
+        job,
+      </if>
+      <if test="sign != null">
+        sign,
       </if>
       <if test="ctime != null">
         ctime,
@@ -72,6 +107,24 @@
       <if test="gender != null">
         #{gender,jdbcType=TINYINT},
       </if>
+      <if test="birthday != null">
+        #{birthday,jdbcType=DATE},
+      </if>
+      <if test="addrProvince != null">
+        #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null">
+        #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrRegion != null">
+        #{addrRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null">
+        #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        #{sign,jdbcType=VARCHAR},
+      </if>
       <if test="ctime != null">
         #{ctime,jdbcType=TIMESTAMP},
       </if>
@@ -95,6 +148,24 @@
       <if test="gender != null">
         gender = #{gender,jdbcType=TINYINT},
       </if>
+      <if test="birthday != null">
+        birthday = #{birthday,jdbcType=DATE},
+      </if>
+      <if test="addrProvince != null">
+        addr_province = #{addrProvince,jdbcType=VARCHAR},
+      </if>
+      <if test="addrCity != null">
+        addr_city = #{addrCity,jdbcType=VARCHAR},
+      </if>
+      <if test="addrRegion != null">
+        addr_region = #{addrRegion,jdbcType=VARCHAR},
+      </if>
+      <if test="job != null">
+        job = #{job,jdbcType=VARCHAR},
+      </if>
+      <if test="sign != null">
+        sign = #{sign,jdbcType=VARCHAR},
+      </if>
       <if test="ctime != null">
         ctime = #{ctime,jdbcType=TIMESTAMP},
       </if>
@@ -110,6 +181,12 @@
       phone = #{phone,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
       gender = #{gender,jdbcType=TINYINT},
+      birthday = #{birthday,jdbcType=DATE},
+      addr_province = #{addrProvince,jdbcType=VARCHAR},
+      addr_city = #{addrCity,jdbcType=VARCHAR},
+      addr_region = #{addrRegion,jdbcType=VARCHAR},
+      job = #{job,jdbcType=VARCHAR},
+      sign = #{sign,jdbcType=VARCHAR},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}

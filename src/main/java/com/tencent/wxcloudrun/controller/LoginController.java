@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.model.DO.User;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.model.common.OpenidResponse;
 import com.tencent.wxcloudrun.model.common.login.*;
@@ -21,13 +22,13 @@ public class LoginController {
     @Autowired
     private LoginService loginService;
 
-    @GetMapping(value = "/login/openid")
+    @PostMapping(value = "/login/dologin")
     public ApiResponse getOpenid(String jsCode) {
-        OpenidResponse response = loginService.fetchOpenid(jsCode);
-        if (StringUtils.isNotEmpty(response.getOpenId())) {
-            return ApiResponse.ok(response.getOpenId());
+        User userInfo = loginService.login(jsCode);
+        if (userInfo != null) {
+            return ApiResponse.ok(userInfo);
         } else {
-            return ApiResponse.error(-1, "fetch openid error");
+            return ApiResponse.error(-1, "login error");
         }
     }
 

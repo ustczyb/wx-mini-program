@@ -1,7 +1,11 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import lombok.Builder;
+import lombok.experimental.Tolerate;
+
 import java.util.Date;
 
+@Builder
 public class User {
     private Long id;
 
@@ -13,9 +17,24 @@ public class User {
 
     private Byte gender;
 
+    private Date birthday;
+
+    private String addrProvince;
+
+    private String addrCity;
+
+    private String addrRegion;
+
+    private String job;
+
+    private String sign;
+
     private Date ctime;
 
     private Date utime;
+
+    @Tolerate
+    public User() {}
 
     public Long getId() {
         return id;
@@ -55,6 +74,54 @@ public class User {
 
     public void setGender(Byte gender) {
         this.gender = gender;
+    }
+
+    public Date getBirthday() {
+        return birthday;
+    }
+
+    public void setBirthday(Date birthday) {
+        this.birthday = birthday;
+    }
+
+    public String getAddrProvince() {
+        return addrProvince;
+    }
+
+    public void setAddrProvince(String addrProvince) {
+        this.addrProvince = addrProvince == null ? null : addrProvince.trim();
+    }
+
+    public String getAddrCity() {
+        return addrCity;
+    }
+
+    public void setAddrCity(String addrCity) {
+        this.addrCity = addrCity == null ? null : addrCity.trim();
+    }
+
+    public String getAddrRegion() {
+        return addrRegion;
+    }
+
+    public void setAddrRegion(String addrRegion) {
+        this.addrRegion = addrRegion == null ? null : addrRegion.trim();
+    }
+
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job == null ? null : job.trim();
+    }
+
+    public String getSign() {
+        return sign;
+    }
+
+    public void setSign(String sign) {
+        this.sign = sign == null ? null : sign.trim();
     }
 
     public Date getCtime() {

@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.service;
 
+import com.tencent.wxcloudrun.model.DO.User;
 import com.tencent.wxcloudrun.model.common.OpenidResponse;
 
 public interface LoginService {
@@ -9,5 +10,5 @@ public interface LoginService {
      * @param jsCode
      * @return
      */
-    OpenidResponse fetchOpenid(String jsCode);
+    User login(String jsCode);
 }
