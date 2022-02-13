@@ -25,4 +25,10 @@ public class UserServiceImpl implements UserService {
         }
         return userMapper.updateByPrimaryKeySelective(userInfo);
     }
+
+    @Override
+    public User queryByUserId(Long userId) {
+        User userInfo = userMapper.selectByUserId(userId);
+        return userInfo;
+    }
 }

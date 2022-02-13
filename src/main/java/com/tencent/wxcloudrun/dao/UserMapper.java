@@ -2,7 +2,6 @@ package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.DO.User;
 import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
 
 @Mapper
 public interface UserMapper {

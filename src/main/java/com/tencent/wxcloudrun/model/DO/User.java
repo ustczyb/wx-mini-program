@@ -1,12 +1,14 @@
 package com.tencent.wxcloudrun.model.DO;
 
 import lombok.Builder;
+import lombok.ToString;
 import lombok.experimental.Tolerate;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
 @Builder
+@ToString
 public class User {
     private Long userId;
 
@@ -31,8 +33,10 @@ public class User {
 
     private String sign;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date ctime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private Date utime;
 
     @Tolerate
