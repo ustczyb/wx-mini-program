@@ -1,9 +1,11 @@
 package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.DO.GroupAccess;
+import org.apache.ibatis.annotations.Mapper;
 
 import java.util.List;
 
+@Mapper
 public interface GroupAccessMapper {
     int deleteByPrimaryKey(Long id);
 

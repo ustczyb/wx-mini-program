@@ -1,13 +1,17 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import lombok.Builder;
+import lombok.experimental.Tolerate;
+
 import java.util.Date;
 
+@Builder
 public class GroupAccess {
     private Long id;
 
-    private Integer groupId;
+    private Long groupId;
 
-    private Integer userId;
+    private Long userId;
 
     private Integer role;
 
@@ -19,6 +23,9 @@ public class GroupAccess {
 
     private Date utime;
 
+    @Tolerate
+    public GroupAccess() {}
+
     public Long getId() {
         return id;
     }
@@ -27,19 +34,19 @@ public class GroupAccess {
         this.id = id;
     }
 
-    public Integer getGroupId() {
+    public Long getGroupId() {
         return groupId;
     }
 
-    public void setGroupId(Integer groupId) {
+    public void setGroupId(Long groupId) {
         this.groupId = groupId;
     }
 
-    public Integer getUserId() {
+    public Long getUserId() {
         return userId;
     }
 
-    public void setUserId(Integer userId) {
+    public void setUserId(Long userId) {
         this.userId = userId;
     }
 

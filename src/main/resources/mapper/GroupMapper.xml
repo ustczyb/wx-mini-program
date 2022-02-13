@@ -17,6 +17,16 @@
     from group_table
     where id = #{id,jdbcType=BIGINT}
   </select>
+  <select id="selectByPrimaryKeys" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from group_table
+    where id in
+          <foreach collection="list" item="groupIdList" open="(" separator="," close=")">
+            #{groupIdList}
+          </foreach>
+        order by name
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from group_table
     where id = #{id,jdbcType=BIGINT}
@@ -27,7 +37,7 @@
     values (#{id,jdbcType=BIGINT}, #{name,jdbcType=VARCHAR}, #{headImage,jdbcType=VARCHAR}, 
       #{ctime,jdbcType=TIMESTAMP}, #{utime,jdbcType=TIMESTAMP})
   </insert>
-  <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.Group">
+  <insert id="insertSelective" useGeneratedKeys="true" parameterType="com.tencent.wxcloudrun.model.DO.Group">
     insert into group_table
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">

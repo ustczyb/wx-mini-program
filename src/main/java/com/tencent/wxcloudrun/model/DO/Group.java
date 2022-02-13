@@ -1,7 +1,13 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import com.fasterxml.jackson.annotation.JsonProperty;
+import lombok.Builder;
+import lombok.experimental.Tolerate;
+
 import java.util.Date;
 
+@Builder
 public class Group {
     private Long id;
 
@@ -9,9 +15,14 @@ public class Group {
 
     private String headImage;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date ctime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date utime;
+
+    @Tolerate
+    public Group() {}
 
     public Long getId() {
         return id;

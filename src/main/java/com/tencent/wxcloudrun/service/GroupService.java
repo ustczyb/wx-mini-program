@@ -6,7 +6,7 @@ import java.util.List;
 
 public interface GroupService {
 
-    int createGroup(Group groupInfo);
+    int createGroup(Group groupInfo, Long userId);
 
     List<Group> queryGroupsOfUser(Long userId);
 }
