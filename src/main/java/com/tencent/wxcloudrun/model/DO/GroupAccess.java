@@ -11,6 +11,8 @@ public class GroupAccess {
 
     private Integer role;
 
+    private Byte valid;
+
     private String permissionDetail;
 
     private Date ctime;
@@ -47,6 +49,14 @@ public class GroupAccess {
 
     public void setRole(Integer role) {
         this.role = role;
+    }
+
+    public Byte getValid() {
+        return valid;
+    }
+
+    public void setValid(Byte valid) {
+        this.valid = valid;
     }
 
     public String getPermissionDetail() {

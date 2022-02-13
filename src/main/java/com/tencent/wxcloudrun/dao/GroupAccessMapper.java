@@ -1,13 +1,9 @@
 package com.tencent.wxcloudrun.dao;
 
 import com.tencent.wxcloudrun.model.DO.GroupAccess;
-import com.tencent.wxcloudrun.model.DO.GroupAccessExample;
+
 import java.util.List;
 
-import org.apache.ibatis.annotations.Mapper;
-import org.apache.ibatis.annotations.Param;
-
-@Mapper
 public interface GroupAccessMapper {
     int deleteByPrimaryKey(Long id);
 
@@ -15,13 +11,9 @@ public interface GroupAccessMapper {
 
     int insertSelective(GroupAccess record);
 
-    List<GroupAccess> selectByExample(GroupAccessExample example);
-
     GroupAccess selectByPrimaryKey(Long id);
 
-    int updateByExampleSelective(@Param("record") GroupAccess record, @Param("example") GroupAccessExample example);
-
-    int updateByExample(@Param("record") GroupAccess record, @Param("example") GroupAccessExample example);
+    List<GroupAccess> selectByUserId(Long userId);
 
     int updateByPrimaryKeySelective(GroupAccess record);
 

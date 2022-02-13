@@ -1,9 +1,9 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.ToString;
 import lombok.experimental.Tolerate;
-import org.springframework.format.annotation.DateTimeFormat;
 
 import java.util.Date;
 
@@ -18,9 +18,9 @@ public class User {
 
     private String name;
 
-    private Byte gender;
+    private String gender;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
 
     private String addrProvince;
@@ -33,10 +33,10 @@ public class User {
 
     private String sign;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ctime;
 
-    @DateTimeFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date utime;
 
     @Tolerate
@@ -74,11 +74,11 @@ public class User {
         this.name = name == null ? null : name.trim();
     }
 
-    public Byte getGender() {
+    public String getGender() {
         return gender;
     }
 
-    public void setGender(Byte gender) {
+    public void setGender(String gender) {
         this.gender = gender;
     }
 

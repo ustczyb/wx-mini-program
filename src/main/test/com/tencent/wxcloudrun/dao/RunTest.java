@@ -23,7 +23,7 @@ public class RunTest {
     public void insertUser() {
         User user = new User();
         user.setName("小黑");
-        user.setGender((byte) 1);
+        user.setGender("男");
         user.setPhone("111111112");
         user.setCtime(new Date());
         userMapper.insert(user);
@@ -34,7 +34,7 @@ public class RunTest {
         User user = new User();
         user.setUserId(1L);
         user.setName("小黑");
-        user.setGender((byte) 1);
+        user.setGender("女");
         user.setPhone("1234567890");
         user.setCtime(new Date());
         userMapper.updateByPrimaryKeySelective(user);

@@ -6,7 +6,7 @@
     <result column="open_id" jdbcType="VARCHAR" property="openId" />
     <result column="phone" jdbcType="VARCHAR" property="phone" />
     <result column="name" jdbcType="VARCHAR" property="name" />
-    <result column="gender" jdbcType="TINYINT" property="gender" />
+    <result column="gender" jdbcType="VARCHAR" property="gender" />
     <result column="birthday" jdbcType="DATE" property="birthday" />
     <result column="addr_province" jdbcType="VARCHAR" property="addrProvince" />
     <result column="addr_city" jdbcType="VARCHAR" property="addrCity" />
@@ -43,7 +43,7 @@
       job, sign, ctime, 
       utime)
     values (#{userId,jdbcType=BIGINT}, #{openId,jdbcType=VARCHAR}, #{phone,jdbcType=VARCHAR},
-      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=TINYINT}, #{birthday,jdbcType=DATE}, 
+      #{name,jdbcType=VARCHAR}, #{gender,jdbcType=VARCHAR}, #{birthday,jdbcType=DATE},
       #{addrProvince,jdbcType=VARCHAR}, #{addrCity,jdbcType=VARCHAR}, #{addrRegion,jdbcType=VARCHAR}, 
       #{job,jdbcType=VARCHAR}, #{sign,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP}, 
       #{utime,jdbcType=TIMESTAMP})
@@ -105,7 +105,7 @@
         #{name,jdbcType=VARCHAR},
       </if>
       <if test="gender != null">
-        #{gender,jdbcType=TINYINT},
+        #{gender,jdbcType=VARCHAR},
       </if>
       <if test="birthday != null">
         #{birthday,jdbcType=DATE},
@@ -143,7 +143,7 @@
         name = #{name,jdbcType=VARCHAR},
       </if>
       <if test="gender != null">
-        gender = #{gender,jdbcType=TINYINT},
+        gender = #{gender,jdbcType=VARCHAR},
       </if>
       <if test="birthday != null">
         birthday = #{birthday,jdbcType=DATE},
@@ -174,7 +174,7 @@
     set open_id = #{openId,jdbcType=VARCHAR},
       phone = #{phone,jdbcType=VARCHAR},
       name = #{name,jdbcType=VARCHAR},
-      gender = #{gender,jdbcType=TINYINT},
+      gender = #{gender,jdbcType=VARCHAR},
       birthday = #{birthday,jdbcType=DATE},
       addr_province = #{addrProvince,jdbcType=VARCHAR},
       addr_city = #{addrCity,jdbcType=VARCHAR},

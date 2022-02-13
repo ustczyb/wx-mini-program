@@ -77,7 +77,7 @@
         <!--enableDeleteByExample（默认true）：MyBatis3Simple为false，指定是否生成动态删除语句；-->
         <!--enableCountByExample（默认true）：MyBatis3Simple为false，指定是否生成动态查询总条数语句（用于分页的总条数查询）；-->
         <!--enableUpdateByExample（默认true）：MyBatis3Simple为false，指定是否生成动态修改语句（只修改对象中不为空的属性）；-->
-        <table tableName="User_table" domainObjectName="User"
+        <table tableName="group_access_table" domainObjectName="GroupAccess"
                enableCountByExample="false"
                enableUpdateByExample="false"
                enableDeleteByExample="false"

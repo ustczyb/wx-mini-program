@@ -1,6 +1,12 @@
 package com.tencent.wxcloudrun.service;
 
+import com.tencent.wxcloudrun.model.DO.Group;
+
+import java.util.List;
+
 public interface GroupService {
 
+    int createGroup(Group groupInfo);
 
+    List<Group> queryGroupsOfUser(Long userId);
 }
