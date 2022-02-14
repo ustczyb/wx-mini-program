@@ -1,13 +1,14 @@
 package com.tencent.wxcloudrun.model.DO;
 
 import com.fasterxml.jackson.annotation.JsonFormat;
-import com.fasterxml.jackson.annotation.JsonProperty;
 import lombok.Builder;
+import lombok.ToString;
 import lombok.experimental.Tolerate;
 
 import java.util.Date;
 
 @Builder
+@ToString
 public class Group {
     private Long id;
 

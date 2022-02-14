@@ -11,7 +11,7 @@ public interface GroupMapper {
 
     int insert(Group record);
 
-    Long insertSelective(Group record);
+    int insertSelective(Group record);
 
     Group selectByPrimaryKey(Long id);
 

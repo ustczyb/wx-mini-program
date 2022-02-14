@@ -9,4 +9,6 @@ public interface GroupService {
     int createGroup(Group groupInfo, Long userId);
 
     List<Group> queryGroupsOfUser(Long userId);
+
+    int addUserToGroup(Long groupId, Long userId);
 }

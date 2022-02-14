@@ -9,7 +9,6 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
 
-import javax.xml.crypto.Data;
 import java.util.Date;
 import java.util.List;
 
@@ -39,6 +38,16 @@ public class GroupController {
             return ApiResponse.ok(groupList);
         } else {
             return ApiResponse.error(-1, "query failed");
+        }
+    }
+
+    @PutMapping("/group/user")
+    public ApiResponse addUserToGroup(Long userId, Long groupId) {
+        int addRes = groupService.addUserToGroup(groupId, userId);
+        if (addRes > 0) {
+            return ApiResponse.ok();
+        } else {
+            return ApiResponse.error(-1, "group add user error");
         }
     }
 
