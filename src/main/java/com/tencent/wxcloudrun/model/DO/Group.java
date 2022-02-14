@@ -14,6 +14,8 @@ public class Group {
 
     private String name;
 
+    private String namePinYin;
+
     private String headImage;
 
     @JsonFormat(pattern = "yyyy-MM-dd")
@@ -24,6 +26,14 @@ public class Group {
 
     @Tolerate
     public Group() {}
+
+    public String getNamePinYin() {
+        return namePinYin;
+    }
+
+    public void setNamePinYin(String namePinYin) {
+        this.namePinYin = namePinYin;
+    }
 
     public Long getId() {
         return id;

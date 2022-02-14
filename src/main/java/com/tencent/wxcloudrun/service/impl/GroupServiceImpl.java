@@ -5,11 +5,14 @@ import com.tencent.wxcloudrun.dao.GroupMapper;
 import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.GroupAccess;
 import com.tencent.wxcloudrun.service.GroupService;
+import com.tencent.wxcloudrun.utils.PinYinUtils;
+import org.apache.commons.lang3.StringUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Comparator;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
@@ -51,7 +54,10 @@ public class GroupServiceImpl implements GroupService {
         LOGGER.info("group nums: {}", groupAccessList.size());
         List<Long> groupIdList = groupAccessList.stream().map(GroupAccess::getGroupId).collect(Collectors.toList());
         LOGGER.info("group ids: {}", groupIdList);
-        return groupMapper.selectByPrimaryKeys(groupIdList);
+        List<Group> groupList = groupMapper.selectByPrimaryKeys(groupIdList);
+        groupList.forEach(group -> group.setNamePinYin(PinYinUtils.getPinyin(group.getName(), StringUtils.EMPTY)));
+        groupList.sort(Comparator.comparing(Group::getNamePinYin));
+        return groupList;
     }
 
     @Override
