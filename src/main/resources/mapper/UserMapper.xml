@@ -26,6 +26,15 @@
     from user_table
     where id = #{userId,jdbcType=BIGINT}
   </select>
+  <select id="selectByUserIds" parameterType="java.util.List" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from user_table
+    where id in
+    <foreach collection="list" item="userIdList" open="(" separator="," close=")">
+      #{userIdList}
+    </foreach>
+  </select>
   <select id="selectByOpenId" parameterType="java.lang.String" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />

@@ -17,6 +17,8 @@ public interface GroupAccessMapper {
 
     List<GroupAccess> selectByUserId(Long userId);
 
+    List<GroupAccess> selectByGroupId(Long groupId);
+
     int updateByPrimaryKeySelective(GroupAccess record);
 
     int updateByPrimaryKey(GroupAccess record);

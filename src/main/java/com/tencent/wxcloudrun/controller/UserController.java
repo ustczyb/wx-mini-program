@@ -7,7 +7,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PutMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -18,7 +18,7 @@ public class UserController {
     @Autowired
     private UserService userService;
 
-    @PutMapping("user/info")
+    @PostMapping("user/user")
     public ApiResponse modifyUserInfo(User userInfo) {
         int updateRes = userService.modifyUserInfo(userInfo);
         if (updateRes > 0) {
@@ -29,7 +29,7 @@ public class UserController {
         }
     }
 
-    @GetMapping("user/info")
+    @GetMapping("user/user")
     public ApiResponse queryUserInfo(Long userId) {
         User userInfo = userService.queryByUserId(userId);
         if (userInfo != null) {

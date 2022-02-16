@@ -10,7 +10,7 @@ import java.util.Date;
 @Builder
 @ToString
 public class Group {
-    private Long id;
+    private Long groupId;
 
     private String name;
 
@@ -35,12 +35,12 @@ public class Group {
         this.namePinYin = namePinYin;
     }
 
-    public Long getId() {
-        return id;
+    public Long getGroupId() {
+        return groupId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setGroupId(Long groupId) {
+        this.groupId = groupId;
     }
 
     public String getName() {
