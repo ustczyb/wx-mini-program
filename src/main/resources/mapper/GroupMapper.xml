@@ -40,7 +40,7 @@
   <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.tencent.wxcloudrun.model.DO.Group">
     insert into group_table
     <trim prefix="(" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="groupId != null">
         id,
       </if>
       <if test="name != null">
@@ -57,7 +57,7 @@
       </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
-      <if test="id != null">
+      <if test="groupId != null">
         #{groupId,jdbcType=BIGINT},
       </if>
       <if test="name != null">
