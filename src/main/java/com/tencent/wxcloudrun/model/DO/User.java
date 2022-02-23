@@ -21,6 +21,8 @@ public class User {
 
     private String gender;
 
+    private String headImage;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd")
     @JsonFormat(pattern = "yyyy-MM-dd")
     private Date birthday;
@@ -43,6 +45,14 @@ public class User {
 
     @Tolerate
     public User() {}
+
+    public String getHeadImage() {
+        return headImage;
+    }
+
+    public void setHeadImage(String headImage) {
+        this.headImage = headImage;
+    }
 
     public Long getUserId() {
         return userId;
