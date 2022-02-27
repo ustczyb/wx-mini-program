@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.User;
+import com.tencent.wxcloudrun.model.DTO.UserAccessInfo;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.service.GroupService;
 import com.tencent.wxcloudrun.service.UserService;
@@ -75,8 +76,8 @@ public class GroupController {
     }
 
     @PutMapping("/group/user")
-    public ApiResponse addUserToGroup(Long userId, Long groupId) {
-        int addRes = groupService.addUserToGroup(groupId, userId);
+    public ApiResponse addUserToGroup(Long userId, Long groupId, String role) {
+        int addRes = groupService.addUserToGroup(groupId, userId, role);
         if (addRes > 0) {
             return ApiResponse.ok();
         } else {
@@ -97,7 +98,7 @@ public class GroupController {
 
     @GetMapping("/group/userlist")
     public ApiResponse getUsersOfGroup(Long groupId) {
-        List<User> userList = groupService.queryUsersOfGroup(groupId);
+        List<UserAccessInfo> userList = groupService.queryUsersOfGroup(groupId);
         if (CollectionUtils.isNotEmpty(userList)) {
             return ApiResponse.ok(userList);
         } else {

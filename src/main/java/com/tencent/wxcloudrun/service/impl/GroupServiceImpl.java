@@ -1,11 +1,13 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.tencent.wxcloudrun.constant.GroupAccessRoleConstant;
 import com.tencent.wxcloudrun.dao.GroupAccessMapper;
 import com.tencent.wxcloudrun.dao.GroupMapper;
 import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.GroupAccess;
 import com.tencent.wxcloudrun.model.DO.User;
+import com.tencent.wxcloudrun.model.DTO.UserAccessInfo;
 import com.tencent.wxcloudrun.service.GroupService;
 import com.tencent.wxcloudrun.utils.PinYinUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -14,9 +16,7 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Comparator;
-import java.util.Date;
-import java.util.List;
+import java.util.*;
 import java.util.stream.Collectors;
 
 @Service
@@ -44,12 +44,12 @@ public class GroupServiceImpl implements GroupService {
         Long groupId = groupInfo.getGroupId();
         Date now = new Date();
         return groupAccessMapper.insertSelective(GroupAccess.builder()
-                        .groupId(groupId)
-                        .userId(userId)
-                        .valid((byte) 1)
-                        .ctime(now)
-                        .utime(now)
-                        .role(1)        // TODO role
+                .groupId(groupId)
+                .userId(userId)
+                .valid((byte) 1)
+                .ctime(now)
+                .utime(now)
+                .role(1)
                 .build());
     }
 
@@ -76,7 +76,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public int addUserToGroup(Long groupId, Long userId) {
+    public int addUserToGroup(Long groupId, Long userId, String role) {
         Date now = new Date();
         return groupAccessMapper.insertSelective(GroupAccess.builder()
                 .groupId(groupId)
@@ -84,7 +84,7 @@ public class GroupServiceImpl implements GroupService {
                 .valid((byte) 1)
                 .ctime(now)
                 .utime(now)
-                .role(1)
+                .role(GroupAccessRoleConstant.getIdByStr(role))
                 .build());
     }
 
@@ -94,12 +94,33 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<User> queryUsersOfGroup(Long groupId) {
+    public List<UserAccessInfo> queryUsersOfGroup(Long groupId) {
         List<GroupAccess> groupAccessList = groupAccessMapper.selectByGroupId(groupId);
         LOGGER.info("user nums: {}", groupAccessList.size());
         List<Long> userIdList = groupAccessList.stream().map(GroupAccess::getUserId).collect(Collectors.toList());
         LOGGER.info("user ids: {}", userIdList);
         List<User> userList = userMapper.selectByUserIds(userIdList);
-        return userList;
+        return mergeToUserAccessInfo(userList, groupAccessList);
+    }
+
+    private List<UserAccessInfo> mergeToUserAccessInfo(List<User> userList, List<GroupAccess> groupAccessList) {
+        if (userList.size() != groupAccessList.size()) {
+            LOGGER.warn("user list size {} not match groupaccess list size {}", userList.size(), groupAccessList.size());
+        }
+        List<UserAccessInfo> resList = new ArrayList<>(userList.size());
+        userList.sort(Comparator.comparingLong(User::getUserId));
+        groupAccessList.sort(Comparator.comparingLong(GroupAccess::getUserId));
+        for (int i = 0; i < userList.size(); i++) {
+            User user = userList.get(i);
+            GroupAccess groupAccess = groupAccessList.get(i);
+            assert Objects.equals(user.getUserId(), groupAccess.getGroupId());
+            resList.add(UserAccessInfo.builder()
+                    .name(user.getName())
+                    .headImage(user.getHeadImage())
+                    .sign(user.getSign())
+                    .role(GroupAccessRoleConstant.getRoleConstantById(groupAccess.getRole()))
+                    .build());
+        }
+        return resList;
     }
 }
