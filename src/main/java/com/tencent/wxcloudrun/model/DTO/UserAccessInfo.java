@@ -10,6 +10,8 @@ import java.util.Date;
 @Builder
 public class UserAccessInfo {
 
+    private Long userId;
+
     private String name;
 
     private String headImage;

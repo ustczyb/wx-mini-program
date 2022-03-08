@@ -115,6 +115,7 @@ public class GroupServiceImpl implements GroupService {
             GroupAccess groupAccess = groupAccessList.get(i);
             assert Objects.equals(user.getUserId(), groupAccess.getGroupId());
             resList.add(UserAccessInfo.builder()
+                    .userId(user.getUserId())
                     .name(user.getName())
                     .headImage(user.getHeadImage())
                     .sign(user.getSign())

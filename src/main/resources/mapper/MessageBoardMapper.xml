@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.tencent.wxcloudrun.dao.MessageBoardMapper">
+  <resultMap id="BaseResultMap" type="com.tencent.wxcloudrun.model.DO.MessageBoard">
+    <id column="id" jdbcType="BIGINT" property="id" />
+    <result column="groupId" jdbcType="BIGINT" property="groupid" />
+    <result column="userId" jdbcType="BIGINT" property="userid" />
+    <result column="taskId" jdbcType="BIGINT" property="taskid" />
+    <result column="content" jdbcType="VARCHAR" property="content" />
+    <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    id, groupId, userId, taskId, content, parent_id
+  </sql>
+  <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
+    select 
+    <include refid="Base_Column_List" />
+    from messageboard_table
+    where id = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
+    delete from messageboard_table
+    where id = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.MessageBoard">
+    insert into messageboard_table (id, groupId, userId, 
+      taskId, content, parent_id
+      )
+    values (#{id,jdbcType=BIGINT}, #{groupid,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, 
+      #{taskid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}
+      )
+  </insert>
+  <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.MessageBoard">
+    insert into messageboard_table
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        id,
+      </if>
+      <if test="groupid != null">
+        groupId,
+      </if>
+      <if test="userid != null">
+        userId,
+      </if>
+      <if test="taskid != null">
+        taskId,
+      </if>
+      <if test="content != null">
+        content,
+      </if>
+      <if test="parentId != null">
+        parent_id,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id,jdbcType=BIGINT},
+      </if>
+      <if test="groupid != null">
+        #{groupid,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null">
+        #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="taskid != null">
+        #{taskid,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        #{parentId,jdbcType=BIGINT},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.tencent.wxcloudrun.model.DO.MessageBoard">
+    update messageboard_table
+    <set>
+      <if test="groupid != null">
+        groupId = #{groupid,jdbcType=BIGINT},
+      </if>
+      <if test="userid != null">
+        userId = #{userid,jdbcType=BIGINT},
+      </if>
+      <if test="taskid != null">
+        taskId = #{taskid,jdbcType=BIGINT},
+      </if>
+      <if test="content != null">
+        content = #{content,jdbcType=VARCHAR},
+      </if>
+      <if test="parentId != null">
+        parent_id = #{parentId,jdbcType=BIGINT},
+      </if>
+    </set>
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.MessageBoard">
+    update messageboard_table
+    set groupId = #{groupid,jdbcType=BIGINT},
+      userId = #{userid,jdbcType=BIGINT},
+      taskId = #{taskid,jdbcType=BIGINT},
+      content = #{content,jdbcType=VARCHAR},
+      parent_id = #{parentId,jdbcType=BIGINT}
+    where id = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

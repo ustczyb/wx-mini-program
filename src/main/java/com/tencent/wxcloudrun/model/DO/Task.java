@@ -1,5 +1,8 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+import org.springframework.format.annotation.DateTimeFormat;
+
 import java.util.Date;
 
 public class Task {
@@ -19,12 +22,20 @@ public class Task {
 
     private Byte taskType;
 
-    private Date exceptStartTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date expectStartTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date actualStartTime;
 
-    private Date exceptFinishedTime;
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date expectFinishedTime;
 
+    @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date actualFinishedTime;
 
     private Long bbsId;
@@ -99,12 +110,12 @@ public class Task {
         this.taskType = taskType;
     }
 
-    public Date getExceptStartTime() {
-        return exceptStartTime;
+    public Date getExpectStartTime() {
+        return expectStartTime;
     }
 
-    public void setExceptStartTime(Date exceptStartTime) {
-        this.exceptStartTime = exceptStartTime;
+    public void setExpectStartTime(Date expectStartTime) {
+        this.expectStartTime = expectStartTime;
     }
 
     public Date getActualStartTime() {
@@ -115,12 +126,12 @@ public class Task {
         this.actualStartTime = actualStartTime;
     }
 
-    public Date getExceptFinishedTime() {
-        return exceptFinishedTime;
+    public Date getExpectFinishedTime() {
+        return expectFinishedTime;
     }
 
-    public void setExceptFinishedTime(Date exceptFinishedTime) {
-        this.exceptFinishedTime = exceptFinishedTime;
+    public void setExpectFinishedTime(Date expectFinishedTime) {
+        this.expectFinishedTime = expectFinishedTime;
     }
 
     public Date getActualFinishedTime() {
