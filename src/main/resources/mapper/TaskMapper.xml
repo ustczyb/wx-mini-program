@@ -8,6 +8,7 @@
     <result column="valid" jdbcType="TINYINT" property="valid" />
     <result column="state" jdbcType="INTEGER" property="state" />
     <result column="title" jdbcType="VARCHAR" property="title" />
+    <result column="tags" jdbcType="VARCHAR" property="tags" />
     <result column="trigger_type" jdbcType="TINYINT" property="triggerType" />
     <result column="task_type" jdbcType="TINYINT" property="taskType" />
     <result column="expect_start_time" jdbcType="TIMESTAMP" property="expectStartTime" />
@@ -22,7 +23,7 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, group_id, create_user_id, valid, state, title, trigger_type, task_type, expect_start_time, 
+    id, group_id, create_user_id, valid, state, title, tags, trigger_type, task_type, expect_start_time,
     actual_start_time, expect_finished_time, actual_finished_time, bbs_id, ctime, utime
   </sql>
   <sql id="Blob_Column_List">
@@ -58,13 +59,13 @@
   </delete>
   <insert id="insert"  useGeneratedKeys="true" keyProperty="id" parameterType="com.tencent.wxcloudrun.model.DO.Task">
     insert into task_table (id, group_id, create_user_id, 
-      valid, state, title, 
+      valid, state, title, tags,
       trigger_type, task_type, expect_start_time, 
       actual_start_time, expect_finished_time, 
       actual_finished_time, bbs_id, ctime, 
       utime, content)
     values (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, 
-      #{valid,jdbcType=TINYINT}, #{state,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, 
+      #{valid,jdbcType=TINYINT}, #{state,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{tags,jdbcType=VARCHAR},
       #{triggerType,jdbcType=TINYINT}, #{taskType,jdbcType=TINYINT}, #{expectStartTime,jdbcType=TIMESTAMP}, 
       #{actualStartTime,jdbcType=TIMESTAMP}, #{expectFinishedTime,jdbcType=TIMESTAMP}, 
       #{actualFinishedTime,jdbcType=TIMESTAMP}, #{bbsId,jdbcType=BIGINT}, #{ctime,jdbcType=TIMESTAMP}, 
@@ -90,6 +91,9 @@
       </if>
       <if test="title != null">
         title,
+      </if>
+      <if test="tags != null">
+        tags,
       </if>
       <if test="triggerType != null">
         trigger_type,
@@ -141,6 +145,9 @@
       <if test="title != null">
         #{title,jdbcType=VARCHAR},
       </if>
+      <if test="tags != null">
+        #{tags,jdbcType=VARCHAR},
+      </if>
       <if test="triggerType != null">
         #{triggerType,jdbcType=TINYINT},
       </if>
@@ -191,6 +198,9 @@
       <if test="title != null">
         title = #{title,jdbcType=VARCHAR},
       </if>
+      <if test="tags != null">
+        tags = #{tags,jdbcType=VARCHAR},
+      </if>
       <if test="triggerType != null">
         trigger_type = #{triggerType,jdbcType=TINYINT},
       </if>
@@ -231,6 +241,7 @@
       valid = #{valid,jdbcType=TINYINT},
       state = #{state,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
       trigger_type = #{triggerType,jdbcType=TINYINT},
       task_type = #{taskType,jdbcType=TINYINT},
       expect_start_time = #{expectStartTime,jdbcType=TIMESTAMP},
@@ -250,6 +261,7 @@
       valid = #{valid,jdbcType=TINYINT},
       state = #{state,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
+      tags = #{tags,jdbcType=VARCHAR},
       trigger_type = #{triggerType,jdbcType=TINYINT},
       task_type = #{taskType,jdbcType=TINYINT},
       expect_start_time = #{expectStartTime,jdbcType=TIMESTAMP},

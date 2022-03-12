@@ -22,6 +22,8 @@ public class Task {
 
     private Byte taskType;
 
+    private String tags;
+
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date expectStartTime;
@@ -164,6 +166,14 @@ public class Task {
 
     public void setUtime(Date utime) {
         this.utime = utime;
+    }
+
+    public String getTags() {
+        return tags;
+    }
+
+    public void setTags(String tags) {
+        this.tags = tags;
     }
 
     public String getContent() {

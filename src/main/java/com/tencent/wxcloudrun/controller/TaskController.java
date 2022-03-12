@@ -51,7 +51,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("task/group")
+    @GetMapping("progress/group")
     public ApiResponse queryByGroupId(Long groupId) {
         List<Task> taskList = taskService.queryByGroupId(groupId);
         if (CollectionUtils.isNotEmpty(taskList)) {
@@ -61,7 +61,7 @@ public class TaskController {
         }
     }
 
-    @GetMapping("task/time")
+    @GetMapping("progress/time")
     public ApiResponse queryByTime(@DateTimeFormat(pattern = "yyyy-MM-dd")Date endDate) {
         List<Task> taskList = taskService.queryByEndDay(endDate);
         if (CollectionUtils.isNotEmpty(taskList)) {
