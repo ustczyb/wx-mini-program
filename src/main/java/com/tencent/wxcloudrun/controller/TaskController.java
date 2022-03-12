@@ -3,6 +3,7 @@ package com.tencent.wxcloudrun.controller;
 import com.tencent.wxcloudrun.model.DO.Task;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.service.TaskService;
+import com.tencent.wxcloudrun.utils.ConvertUtils;
 import org.apache.commons.collections4.CollectionUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.format.annotation.DateTimeFormat;
@@ -41,8 +42,8 @@ public class TaskController {
     }
 
     @PutMapping("task/task")
-    public ApiResponse createTask(Task task) {
-        int createRes = taskService.createTask(task);
+    public ApiResponse createTask(Task task, String userIds) {
+        int createRes = taskService.createTask(task, ConvertUtils.string2idList(userIds));
         if (createRes > 0) {
             return ApiResponse.ok();
         } else {
@@ -79,6 +80,5 @@ public class TaskController {
     public ApiResponse createMessage(Long taskId, Long userId, String message) {
         return ApiResponse.ok();
     }
-
 
 }

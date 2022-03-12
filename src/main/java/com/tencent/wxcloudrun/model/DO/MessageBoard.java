@@ -1,5 +1,7 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import java.util.Date;
+
 public class MessageBoard {
     private Long id;
 
@@ -12,6 +14,10 @@ public class MessageBoard {
     private String content;
 
     private Long parentId;
+
+    private Date ctime;
+
+    private Date utime;
 
     public Long getId() {
         return id;
@@ -59,5 +65,21 @@ public class MessageBoard {
 
     public void setParentId(Long parentId) {
         this.parentId = parentId;
+    }
+
+    public Date getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(Date ctime) {
+        this.ctime = ctime;
+    }
+
+    public Date getUtime() {
+        return utime;
+    }
+
+    public void setUtime(Date utime) {
+        this.utime = utime;
     }
 }

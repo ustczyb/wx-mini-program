@@ -35,7 +35,7 @@ public class GroupServiceImpl implements GroupService {
     private GroupAccessMapper groupAccessMapper;
 
     @Override
-    @Transactional
+    @Transactional(rollbackFor = {Exception.class})
     public int createGroup(Group groupInfo, Long userId) {
         int insertRes = groupMapper.insertSelective(groupInfo);
         if (insertRes <= 0) {

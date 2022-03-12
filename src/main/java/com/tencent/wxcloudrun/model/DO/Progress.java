@@ -1,5 +1,11 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import lombok.Builder;
+import lombok.experimental.Tolerate;
+
+import java.util.Date;
+
+@Builder
 public class Progress {
     private Integer id;
 
@@ -10,6 +16,13 @@ public class Progress {
     private Long groupId;
 
     private Byte state;
+
+    private Date ctime;
+
+    private Date utime;
+
+    @Tolerate
+    public Progress() {}
 
     public Integer getId() {
         return id;
@@ -49,5 +62,21 @@ public class Progress {
 
     public void setState(Byte state) {
         this.state = state;
+    }
+
+    public Date getCtime() {
+        return ctime;
+    }
+
+    public void setCtime(Date ctime) {
+        this.ctime = ctime;
+    }
+
+    public Date getUtime() {
+        return utime;
+    }
+
+    public void setUtime(Date utime) {
+        this.utime = utime;
     }
 }

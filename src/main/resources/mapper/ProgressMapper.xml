@@ -7,9 +7,11 @@
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="group_id" jdbcType="BIGINT" property="groupId" />
     <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="utime" jdbcType="TIMESTAMP" property="utime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_id, user_id, group_id, state
+    id, task_id, user_id, group_id, state, ctime, utime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -23,9 +25,11 @@
   </delete>
   <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     insert into progress_table (id, task_id, user_id, 
-      group_id, state)
+      group_id, state, ctime, 
+      utime)
     values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{groupId,jdbcType=BIGINT}, #{state,jdbcType=TINYINT})
+      #{groupId,jdbcType=BIGINT}, #{state,jdbcType=TINYINT}, #{ctime,jdbcType=TIMESTAMP}, 
+      #{utime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     insert into progress_table
@@ -45,6 +49,12 @@
       <if test="state != null">
         state,
       </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="utime != null">
+        utime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -61,6 +71,12 @@
       </if>
       <if test="state != null">
         #{state,jdbcType=TINYINT},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null">
+        #{utime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -79,6 +95,12 @@
       <if test="state != null">
         state = #{state,jdbcType=TINYINT},
       </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null">
+        utime = #{utime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
@@ -87,7 +109,9 @@
     set task_id = #{taskId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
       group_id = #{groupId,jdbcType=BIGINT},
-      state = #{state,jdbcType=TINYINT}
+      state = #{state,jdbcType=TINYINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
   </update>
 </mapper>

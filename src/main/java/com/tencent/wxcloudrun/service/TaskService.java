@@ -7,7 +7,7 @@ import java.util.List;
 
 public interface TaskService {
 
-    int createTask(Task task);
+    int createTask(Task task, List<Long> userIdList);
 
     int modifyTask(Task task);
 

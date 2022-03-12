@@ -8,9 +8,11 @@
     <result column="taskId" jdbcType="BIGINT" property="taskid" />
     <result column="content" jdbcType="VARCHAR" property="content" />
     <result column="parent_id" jdbcType="BIGINT" property="parentId" />
+    <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
+    <result column="utime" jdbcType="TIMESTAMP" property="utime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, groupId, userId, taskId, content, parent_id
+    id, groupId, userId, taskId, content, parent_id, ctime, utime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Long" resultMap="BaseResultMap">
     select 
@@ -24,11 +26,11 @@
   </delete>
   <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.MessageBoard">
     insert into messageboard_table (id, groupId, userId, 
-      taskId, content, parent_id
-      )
+      taskId, content, parent_id, 
+      ctime, utime)
     values (#{id,jdbcType=BIGINT}, #{groupid,jdbcType=BIGINT}, #{userid,jdbcType=BIGINT}, 
-      #{taskid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}
-      )
+      #{taskid,jdbcType=BIGINT}, #{content,jdbcType=VARCHAR}, #{parentId,jdbcType=BIGINT}, 
+      #{ctime,jdbcType=TIMESTAMP}, #{utime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.MessageBoard">
     insert into messageboard_table
@@ -51,6 +53,12 @@
       <if test="parentId != null">
         parent_id,
       </if>
+      <if test="ctime != null">
+        ctime,
+      </if>
+      <if test="utime != null">
+        utime,
+      </if>
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -70,6 +78,12 @@
       </if>
       <if test="parentId != null">
         #{parentId,jdbcType=BIGINT},
+      </if>
+      <if test="ctime != null">
+        #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null">
+        #{utime,jdbcType=TIMESTAMP},
       </if>
     </trim>
   </insert>
@@ -91,6 +105,12 @@
       <if test="parentId != null">
         parent_id = #{parentId,jdbcType=BIGINT},
       </if>
+      <if test="ctime != null">
+        ctime = #{ctime,jdbcType=TIMESTAMP},
+      </if>
+      <if test="utime != null">
+        utime = #{utime,jdbcType=TIMESTAMP},
+      </if>
     </set>
     where id = #{id,jdbcType=BIGINT}
   </update>
@@ -100,7 +120,9 @@
       userId = #{userid,jdbcType=BIGINT},
       taskId = #{taskid,jdbcType=BIGINT},
       content = #{content,jdbcType=VARCHAR},
-      parent_id = #{parentId,jdbcType=BIGINT}
+      parent_id = #{parentId,jdbcType=BIGINT},
+      ctime = #{ctime,jdbcType=TIMESTAMP},
+      utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
 </mapper>
