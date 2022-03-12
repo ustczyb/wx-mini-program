@@ -15,6 +15,7 @@ import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
@@ -34,8 +35,8 @@ public class GroupServiceImpl implements GroupService {
     private GroupAccessMapper groupAccessMapper;
 
     @Override
+    @Transactional
     public int createGroup(Group groupInfo, Long userId) {
-        // TODO transection
         int insertRes = groupMapper.insertSelective(groupInfo);
         if (insertRes <= 0) {
             LOGGER.error("create group error. groupInfo:{}, userId:{}", groupInfo, userId);
