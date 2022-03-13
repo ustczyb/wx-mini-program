@@ -1,9 +1,12 @@
 package com.tencent.wxcloudrun.service.impl;
 
+import com.tencent.wxcloudrun.dao.GroupMapper;
 import com.tencent.wxcloudrun.dao.ProgressMapper;
 import com.tencent.wxcloudrun.dao.TaskMapper;
+import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DO.Task;
+import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
 import com.tencent.wxcloudrun.service.TaskService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -28,6 +31,9 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private ProgressMapper progressMapper;
+
+    @Autowired
+    private GroupMapper groupMapper;
 
     @Override
     @Transactional(rollbackFor={Exception.class})
@@ -73,8 +79,10 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> queryByGroupId(Long groupId) {
-        return taskMapper.queryByGroupIdTasks(groupId);
+    public GroupTaskDTO queryByGroupId(Long groupId) {
+        Group group = groupMapper.selectByPrimaryKey(groupId);
+        List<Task> taskList = taskMapper.queryByGroupIdTasks(groupId);
+        return GroupTaskDTO.builder().group(group).taskList(taskList).build();
     }
 
     @Override

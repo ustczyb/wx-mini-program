@@ -7,7 +7,7 @@ import com.tencent.wxcloudrun.dao.UserMapper;
 import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.GroupAccess;
 import com.tencent.wxcloudrun.model.DO.User;
-import com.tencent.wxcloudrun.model.DTO.UserAccessInfo;
+import com.tencent.wxcloudrun.model.DTO.UserAccessDTO;
 import com.tencent.wxcloudrun.service.GroupService;
 import com.tencent.wxcloudrun.utils.PinYinUtils;
 import org.apache.commons.lang3.StringUtils;
@@ -95,7 +95,7 @@ public class GroupServiceImpl implements GroupService {
     }
 
     @Override
-    public List<UserAccessInfo> queryUsersOfGroup(Long groupId) {
+    public List<UserAccessDTO> queryUsersOfGroup(Long groupId) {
         List<GroupAccess> groupAccessList = groupAccessMapper.selectByGroupId(groupId);
         LOGGER.info("user nums: {}", groupAccessList.size());
         List<Long> userIdList = groupAccessList.stream().map(GroupAccess::getUserId).collect(Collectors.toList());
@@ -104,18 +104,18 @@ public class GroupServiceImpl implements GroupService {
         return mergeToUserAccessInfo(userList, groupAccessList);
     }
 
-    private List<UserAccessInfo> mergeToUserAccessInfo(List<User> userList, List<GroupAccess> groupAccessList) {
+    private List<UserAccessDTO> mergeToUserAccessInfo(List<User> userList, List<GroupAccess> groupAccessList) {
         if (userList.size() != groupAccessList.size()) {
             LOGGER.warn("user list size {} not match groupaccess list size {}", userList.size(), groupAccessList.size());
         }
-        List<UserAccessInfo> resList = new ArrayList<>(userList.size());
+        List<UserAccessDTO> resList = new ArrayList<>(userList.size());
         userList.sort(Comparator.comparingLong(User::getUserId));
         groupAccessList.sort(Comparator.comparingLong(GroupAccess::getUserId));
         for (int i = 0; i < userList.size(); i++) {
             User user = userList.get(i);
             GroupAccess groupAccess = groupAccessList.get(i);
             assert Objects.equals(user.getUserId(), groupAccess.getGroupId());
-            resList.add(UserAccessInfo.builder()
+            resList.add(UserAccessDTO.builder()
                     .userId(user.getUserId())
                     .name(user.getName())
                     .headImage(user.getHeadImage())

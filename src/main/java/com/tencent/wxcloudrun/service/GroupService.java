@@ -1,7 +1,7 @@
 package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.model.DO.Group;
-import com.tencent.wxcloudrun.model.DTO.UserAccessInfo;
+import com.tencent.wxcloudrun.model.DTO.UserAccessDTO;
 
 import java.util.List;
 
@@ -17,5 +17,5 @@ public interface GroupService {
 
     Group queryById(Long groupId);
 
-    List<UserAccessInfo> queryUsersOfGroup(Long groupId);
+    List<UserAccessDTO> queryUsersOfGroup(Long groupId);
 }

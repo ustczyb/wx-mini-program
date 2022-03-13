@@ -8,7 +8,7 @@ import java.util.Date;
 
 @Data
 @Builder
-public class UserAccessInfo {
+public class UserAccessDTO {
 
     private Long userId;
 

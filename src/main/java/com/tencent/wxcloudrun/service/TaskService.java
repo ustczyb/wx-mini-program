@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.model.DO.Task;
+import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
 
 import java.util.Date;
 import java.util.List;
@@ -13,7 +14,7 @@ public interface TaskService {
 
     Task queryByTaskId(Long taskId);
 
-    List<Task> queryByGroupId(Long groupId);
+    GroupTaskDTO queryByGroupId(Long groupId);
 
     List<Task> queryEffectiveTaskByUserId(Long userId);
 

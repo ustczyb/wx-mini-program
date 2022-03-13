@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.DO.Task;
+import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.service.TaskService;
 import com.tencent.wxcloudrun.utils.ConvertUtils;
@@ -53,9 +54,9 @@ public class TaskController {
 
     @GetMapping("group/tasklist")
     public ApiResponse queryByGroupId(Long groupId, Long userId) {
-        List<Task> taskList = taskService.queryByGroupId(groupId);
-        if (CollectionUtils.isNotEmpty(taskList)) {
-            return ApiResponse.ok(taskList);
+        GroupTaskDTO groupTaskDTO = taskService.queryByGroupId(groupId);
+        if (groupTaskDTO != null) {
+            return ApiResponse.ok(groupTaskDTO);
         } else {
             return ApiResponse.error(-1, "no result");
         }
