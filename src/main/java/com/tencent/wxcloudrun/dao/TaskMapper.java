@@ -17,6 +17,8 @@ public interface TaskMapper {
 
     Task selectByPrimaryKey(Long id);
 
+    List<Task> selectByIds(List<Long> ids);
+
     int updateByPrimaryKeySelective(Task record);
 
     int updateByPrimaryKeyWithBLOBs(Task record);

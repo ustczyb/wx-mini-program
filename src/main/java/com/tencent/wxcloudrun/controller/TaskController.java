@@ -51,19 +51,29 @@ public class TaskController {
         }
     }
 
-    @GetMapping("progress/group")
-    public ApiResponse queryByGroupId(Long groupId) {
+    @GetMapping("group/tasklist")
+    public ApiResponse queryByGroupId(Long groupId, Long userId) {
         List<Task> taskList = taskService.queryByGroupId(groupId);
         if (CollectionUtils.isNotEmpty(taskList)) {
             return ApiResponse.ok(taskList);
         } else {
-            return ApiResponse.error(-1, "query failed!");
+            return ApiResponse.error(-1, "no result");
         }
     }
 
-    @GetMapping("progress/time")
-    public ApiResponse queryByTime(@DateTimeFormat(pattern = "yyyy-MM-dd")Date endDate) {
-        List<Task> taskList = taskService.queryByEndDay(endDate);
+    @GetMapping("user/tasklist")
+    public ApiResponse queryByUserId(Long userId) {
+        List<Task> taskList = taskService.queryEffectiveTaskByUserId(userId);
+        if (CollectionUtils.isNotEmpty(taskList)) {
+            return ApiResponse.ok(taskList);
+        } else {
+            return ApiResponse.error(-1, "no result");
+        }
+    }
+
+    @GetMapping("user/tasklist/endtime")
+    public ApiResponse queryByTime(Long userId, @DateTimeFormat(pattern = "yyyy-MM-dd")Date endDate) {
+        List<Task> taskList = taskService.queryByEndDay(userId, endDate);
         if (CollectionUtils.isNotEmpty(taskList)) {
             return ApiResponse.ok(taskList);
         } else {

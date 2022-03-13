@@ -16,6 +16,7 @@ import org.springframework.transaction.interceptor.TransactionAspectSupport;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -77,9 +78,28 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> queryByEndDay(Date endDate) {
-        Date date = DateUtils.truncate(endDate, Calendar.DATE);
-        return taskMapper.queryByEnddate(date, DateUtils.addDays(date, 1));
+    public List<Task> queryEffectiveTaskByUserId(Long userId) {
+        // 1.find progresses of user
+        List<Progress> progressList = progressMapper.selectByUserIdProgressList(userId);
+        List<Long> taskIdList = progressList.stream().map(Progress::getTaskId).collect(Collectors.toList());
+        // 2.find corresponding tasks
+        List<Task> taskList = taskMapper.selectByIds(taskIdList);
+        taskList = taskList.stream().filter(x -> x.getExpectFinishedTime().after(new Date())).collect(Collectors.toList());
+        return taskList;
+    }
+
+    @Override
+    public List<Task> queryByEndDay(Long userId, Date endDate) {
+        // 1.find progresses of user
+        List<Progress> progressList = progressMapper.selectByUserIdProgressList(userId);
+        List<Long> taskIdList = progressList.stream().map(Progress::getTaskId).collect(Collectors.toList());
+        // 2.find corresponding tasks
+        List<Task> taskList = taskMapper.selectByIds(taskIdList);
+        taskList = taskList.stream()
+                .filter(x -> x.getExpectFinishedTime().after(DateUtils.truncate(endDate, Calendar.DATE)))
+                .filter(x -> x.getExpectFinishedTime().before(DateUtils.addDays(DateUtils.truncate(endDate, Calendar.DATE), 1)))
+                .collect(Collectors.toList());
+        return taskList;
     }
 
 

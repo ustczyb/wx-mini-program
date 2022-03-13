@@ -53,6 +53,17 @@
     from task_table
     where expect_finished_time &gt; #{startTime} and expect_finished_time &lt; #{endTime}
   </select>
+  <select id="selectByIds" parameterType="java.util.List" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_table
+    where id in
+    <foreach collection="list" item="ids" open="(" separator="," close=")">
+      #{ids}
+    </foreach>
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from task_table
     where id = #{id,jdbcType=BIGINT}
