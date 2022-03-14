@@ -56,7 +56,7 @@ public class TaskController {
     public ApiResponse queryByGroupId(Long groupId, Long userId) {
         GroupTaskDTO groupTaskDTO = taskService.queryByGroupId(groupId);
         if (groupTaskDTO != null) {
-            return ApiResponse.ok(groupTaskDTO);
+            return ApiResponse.ok(groupTaskDTO.getTaskList());
         } else {
             return ApiResponse.error(-1, "no result");
         }
@@ -64,7 +64,7 @@ public class TaskController {
 
     @GetMapping("user/tasklist")
     public ApiResponse queryByUserId(Long userId) {
-        List<Task> taskList = taskService.queryEffectiveTaskByUserId(userId);
+        List<GroupTaskDTO> taskList = taskService.queryEffectiveTaskByUserId(userId);
         if (CollectionUtils.isNotEmpty(taskList)) {
             return ApiResponse.ok(taskList);
         } else {

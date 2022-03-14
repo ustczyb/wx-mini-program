@@ -18,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Map;
 import java.util.stream.Collectors;
 
 @Service
@@ -85,14 +86,19 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public List<Task> queryEffectiveTaskByUserId(Long userId) {
+    public List<GroupTaskDTO> queryEffectiveTaskByUserId(Long userId) {
         // 1.find progresses of user
         List<Progress> progressList = progressMapper.selectByUserIdProgressList(userId);
         List<Long> taskIdList = progressList.stream().map(Progress::getTaskId).collect(Collectors.toList());
         // 2.find corresponding tasks
         List<Task> taskList = taskMapper.selectByIds(taskIdList);
-        taskList = taskList.stream().filter(x -> x.getExpectFinishedTime().after(new Date())).collect(Collectors.toList());
-        return taskList;
+        Map<Long, List<Task>> groupTaskMap = taskList.stream().filter(x -> x.getExpectFinishedTime().after(new Date())).collect(Collectors.groupingBy(Task::getGroupId));
+        return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), e.getValue())).collect(Collectors.toList());
+    }
+
+    private GroupTaskDTO buildGroupTaskDTO(Long groupId, List<Task> tasks) {
+        Group group = groupMapper.selectByPrimaryKey(groupId);
+        return GroupTaskDTO.builder().group(group).taskList(tasks).build();
     }
 
     @Override
