@@ -6,7 +6,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 
 public class Task {
-    private Long id;
+    private Long taskId;
 
     private Long groupId;
 
@@ -48,12 +48,12 @@ public class Task {
 
     private String content;
 
-    public Long getId() {
-        return id;
+    public Long getTaskId() {
+        return taskId;
     }
 
-    public void setId(Long id) {
-        this.id = id;
+    public void setTaskId(Long taskId) {
+        this.taskId = taskId;
     }
 
     public Long getGroupId() {
