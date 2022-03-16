@@ -64,6 +64,15 @@
       #{ids}
     </foreach>
   </select>
+  <select id="selectByCreateUserIdTasks" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_table
+    where create_user_id = #{createUserId,jdbcType=BIGINT}
+    and state = 1
+  </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from task_table
     where id = #{task_id,jdbcType=BIGINT}

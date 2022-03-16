@@ -72,9 +72,19 @@ public class TaskController {
         }
     }
 
+    @GetMapping("user/tasklist/owner")
+    public ApiResponse queryByOwnerId(Long userId) {
+        List<GroupTaskDTO> taskList = taskService.queryEffectiveTaskByUserId(userId);
+        if (CollectionUtils.isNotEmpty(taskList)) {
+            return ApiResponse.ok(taskList);
+        } else {
+            return ApiResponse.error(-1, "no result");
+        }
+    }
+
     @GetMapping("user/tasklist/endtime")
-    public ApiResponse queryByTime(Long userId, @DateTimeFormat(pattern = "yyyy-MM-dd")Date endDate) {
-        List<Task> taskList = taskService.queryByEndDay(userId, endDate);
+    public ApiResponse queryByTime(Long userId, @DateTimeFormat(pattern = "yyyy-MM")Date endMonth) {
+        List<Task> taskList = taskService.queryByMonth(userId, endMonth);
         if (CollectionUtils.isNotEmpty(taskList)) {
             return ApiResponse.ok(taskList);
         } else {

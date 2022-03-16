@@ -96,21 +96,28 @@ public class TaskServiceImpl implements TaskService {
         return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), e.getValue())).collect(Collectors.toList());
     }
 
+    @Override
+    public List<GroupTaskDTO> queryTaskByOwner(Long userId) {
+        List<Task> taskList = taskMapper.selectByCreateUserIdTasks(userId);
+        Map<Long, List<Task>> groupTaskMap = taskList.stream().filter(x -> x.getExpectFinishedTime().after(new Date())).collect(Collectors.groupingBy(Task::getGroupId));
+        return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), e.getValue())).collect(Collectors.toList());
+    }
+
     private GroupTaskDTO buildGroupTaskDTO(Long groupId, List<Task> tasks) {
         Group group = groupMapper.selectByPrimaryKey(groupId);
         return GroupTaskDTO.builder().group(group).taskList(tasks).build();
     }
 
     @Override
-    public List<Task> queryByEndDay(Long userId, Date endDate) {
+    public List<Task> queryByMonth(Long userId, Date endDate) {
         // 1.find progresses of user
         List<Progress> progressList = progressMapper.selectByUserIdProgressList(userId);
         List<Long> taskIdList = progressList.stream().map(Progress::getTaskId).collect(Collectors.toList());
         // 2.find corresponding tasks
         List<Task> taskList = taskMapper.selectByIds(taskIdList);
         taskList = taskList.stream()
-                .filter(x -> x.getExpectFinishedTime().after(DateUtils.truncate(endDate, Calendar.DATE)))
-                .filter(x -> x.getExpectFinishedTime().before(DateUtils.addDays(DateUtils.truncate(endDate, Calendar.DATE), 1)))
+                .filter(x -> x.getExpectFinishedTime().after(DateUtils.truncate(endDate, Calendar.MONTH)))
+                .filter(x -> x.getExpectFinishedTime().before(DateUtils.addMonths(DateUtils.truncate(endDate, Calendar.MONTH), 1)))
                 .collect(Collectors.toList());
         return taskList;
     }
