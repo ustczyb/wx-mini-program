@@ -74,7 +74,7 @@ public class TaskController {
 
     @GetMapping("user/tasklist/owner")
     public ApiResponse queryByOwnerId(Long userId) {
-        List<GroupTaskDTO> taskList = taskService.queryEffectiveTaskByUserId(userId);
+        List<GroupTaskDTO> taskList = taskService.queryTaskByOwner(userId);
         if (CollectionUtils.isNotEmpty(taskList)) {
             return ApiResponse.ok(taskList);
         } else {
