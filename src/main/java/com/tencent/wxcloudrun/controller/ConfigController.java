@@ -6,8 +6,19 @@ import com.tencent.wxcloudrun.model.common.ApiResponse;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.HashMap;
+import java.util.Map;
+
 @RestController
 public class ConfigController {
+
+    @GetMapping("config/task")
+    public ApiResponse getConfig() {
+        Map<String, Map> configMap = new HashMap<>(2);
+        configMap.put("taskType", TaskTypeConstant.getConfig());
+        configMap.put("triggerType", TaskTriggerTypeConstant.getConfig());
+        return ApiResponse.ok(configMap);
+    }
 
     @GetMapping("config/task/type")
     public ApiResponse getTaskType() {
