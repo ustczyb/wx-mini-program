@@ -18,4 +18,11 @@ public class ProgressServiceImpl implements ProgressService {
     public List<Progress> queryByUserAndTask(Long userId, Long taskId) {
         return progressMapper.selectByUserIdAndTaskIdProgressList(userId, taskId);
     }
+
+    @Override
+    public int modifyProgressState(Long userId, Long taskId, int targetState) {
+        return progressMapper.updateStateByUserIdAndTaskId(userId, taskId, targetState);
+    }
+
+
 }

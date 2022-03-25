@@ -128,6 +128,12 @@
     </set>
     where id = #{id,jdbcType=INTEGER}
   </update>
+  <update id="updateStateByUserIdAndTaskId">
+    update progress_table
+    set state = #{targetState,jdbcType=TINYINT}
+    where user_id = #{userId,jdbcType=BIGINT}
+    and    task_id = #{taskId,jdbcType=BIGINT}
+  </update>
   <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     update progress_table
     set task_id = #{taskId,jdbcType=BIGINT},

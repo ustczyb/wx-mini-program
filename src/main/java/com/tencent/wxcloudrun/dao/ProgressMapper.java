@@ -21,5 +21,7 @@ public interface ProgressMapper {
 
     int updateByPrimaryKeySelective(Progress record);
 
+    int updateStateByUserIdAndTaskId(Long userId, Long taskId, int targetState);
+
     int updateByPrimaryKey(Progress record);
 }

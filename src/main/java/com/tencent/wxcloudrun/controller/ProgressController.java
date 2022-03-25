@@ -28,8 +28,12 @@ public class ProgressController {
     }
 
     @PostMapping("progress/state")
-    public ApiResponse modifyState(Long userId, Long taskId) {
-        return ApiResponse.ok();
+    public ApiResponse modifyState(Long userId, Long taskId, int preState, int targetState) {
+        if (progressService.modifyProgressState(userId, taskId, targetState) > 0) {
+            return ApiResponse.ok();
+        } else {
+            return ApiResponse.error(-1, "modify failed");
+        }
     }
 
 }
