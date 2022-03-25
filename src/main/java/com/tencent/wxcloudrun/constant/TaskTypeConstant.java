@@ -1,9 +1,8 @@
 package com.tencent.wxcloudrun.constant;
 
-import java.util.Arrays;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import com.tencent.wxcloudrun.model.DTO.TaskTypeDTO;
+
+import java.util.*;
 
 public class TaskTypeConstant {
 
@@ -20,22 +19,23 @@ public class TaskTypeConstant {
     public static final String TYPE3_SUBTYPE1 = "不需要上传材料";
     public static final String TYPE3_SUBTYPE2 = "需要上传材料";
 
-    private static final Map<String, Integer> CONFIG_MAP = new HashMap<>();
+    private static final List<TaskTypeDTO> CONFIG_LIST = new ArrayList<>();
 
     static {
-        CONFIG_MAP.put(TYPE1, 100);
-        CONFIG_MAP.put(TYPE1_SUBTYPE1, 101);
-        CONFIG_MAP.put(TYPE1_SUBTYPE2, 102);
-        CONFIG_MAP.put(TYPE2, 200);
-        CONFIG_MAP.put(TYPE2_SUBTYPE1, 201);
-        CONFIG_MAP.put(TYPE2_SUBTYPE2, 202);
-        CONFIG_MAP.put(TYPE3, 300);
-        CONFIG_MAP.put(TYPE3_SUBTYPE1, 301);
-        CONFIG_MAP.put(TYPE3_SUBTYPE2, 302);
+        CONFIG_LIST.add(TaskTypeDTO.builder().code(100).desc(TYPE1).subTypeList(
+                        Arrays.asList(TaskTypeDTO.builder().code(101).desc(TYPE1_SUBTYPE1).build(),
+                                TaskTypeDTO.builder().code(102).desc(TYPE1_SUBTYPE2).build()))
+                .build());
+        CONFIG_LIST.add(TaskTypeDTO.builder().code(200).desc(TYPE2).subTypeList(
+                Arrays.asList(TaskTypeDTO.builder().code(201).desc(TYPE2_SUBTYPE1).build(),
+                        TaskTypeDTO.builder().code(202).desc(TYPE2_SUBTYPE2).build())).build());
+        CONFIG_LIST.add(TaskTypeDTO.builder().code(200).desc(TYPE2).subTypeList(
+                Arrays.asList(TaskTypeDTO.builder().code(301).desc(TYPE3_SUBTYPE1).build(),
+                        TaskTypeDTO.builder().code(302).desc(TYPE3_SUBTYPE2).build())).build());
     }
 
-    public static Map<String, Integer> getConfig() {
-        return CONFIG_MAP;
+    public static List<TaskTypeDTO> getConfig() {
+        return CONFIG_LIST;
     }
 
 }
