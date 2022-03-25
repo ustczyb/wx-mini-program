@@ -11,5 +11,7 @@ spring:
 
   jackson:
     time-zone: GMT+8
+    default-property-inclusion: non_null
+
 mybatis:
   mapper-locations: classpath*:mapper/*Mapper.xml

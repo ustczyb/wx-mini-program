@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import lombok.Builder;
 import lombok.experimental.Tolerate;
 
@@ -15,10 +16,14 @@ public class Progress {
 
     private Long groupId;
 
+    private Byte userAccess;
+
     private Byte state;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ctime;
 
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date utime;
 
     @Tolerate
@@ -78,5 +83,13 @@ public class Progress {
 
     public void setUtime(Date utime) {
         this.utime = utime;
+    }
+
+    public short getUserAccess() {
+        return userAccess;
+    }
+
+    public void setUserAccess(Byte userAccess) {
+        this.userAccess = userAccess;
     }
 }
