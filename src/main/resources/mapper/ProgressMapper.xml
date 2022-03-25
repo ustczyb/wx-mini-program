@@ -25,7 +25,7 @@
     <include refid="Base_Column_List" />
     from progress_table
     where user_id = #{userId,jdbcType=INTEGER}
-    and state = 1
+    and state &lt; 300
   </select>
   <select id="selectByUserIdAndTaskIdProgressList" resultMap="BaseResultMap">
     select
