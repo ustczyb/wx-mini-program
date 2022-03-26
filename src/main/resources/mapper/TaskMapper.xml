@@ -76,7 +76,7 @@
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from task_table
-    where id = #{task_id,jdbcType=BIGINT}
+    where id = #{taskId,jdbcType=BIGINT}
   </delete>
   <insert id="insert"  useGeneratedKeys="true" keyProperty="taskId" parameterType="com.tencent.wxcloudrun.model.DO.Task">
     insert into task_table (id, group_id, create_user_id, 
@@ -85,7 +85,7 @@
       actual_start_time, expect_finished_time, 
       actual_finished_time, bbs_id, ctime, 
       utime, content)
-    values (#{task_id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT},
+    values (#{taskId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT},
       #{valid,jdbcType=TINYINT}, #{state,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR} #{tags,jdbcType=VARCHAR},
       #{triggerType,jdbcType=TINYINT}, #{taskType,jdbcType=TINYINT}, #{expectStartTime,jdbcType=TIMESTAMP}, 
       #{actualStartTime,jdbcType=TIMESTAMP}, #{expectFinishedTime,jdbcType=TIMESTAMP}, 
@@ -152,7 +152,7 @@
     </trim>
     <trim prefix="values (" suffix=")" suffixOverrides=",">
       <if test="taskId != null">
-        #{task_id,jdbcType=BIGINT},
+        #{taskId,jdbcType=BIGINT},
       </if>
       <if test="groupId != null">
         #{groupId,jdbcType=BIGINT},
@@ -262,7 +262,7 @@
         content = #{content,jdbcType=LONGVARCHAR},
       </if>
     </set>
-    where id = #{task_id,jdbcType=BIGINT}
+    where id = #{taskId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tencent.wxcloudrun.model.DO.Task">
     update task_table
@@ -283,7 +283,7 @@
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP},
       content = #{content,jdbcType=LONGVARCHAR}
-    where id = #{task_id,jdbcType=BIGINT}
+    where id = #{taskId,jdbcType=BIGINT}
   </update>
   <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.Task">
     update task_table
@@ -303,6 +303,6 @@
       bbs_id = #{bbsId,jdbcType=BIGINT},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP}
-    where id = #{task_id,jdbcType=BIGINT}
+    where id = #{taskId,jdbcType=BIGINT}
   </update>
 </mapper>
