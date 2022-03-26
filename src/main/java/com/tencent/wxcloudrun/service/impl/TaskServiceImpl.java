@@ -3,6 +3,8 @@ package com.tencent.wxcloudrun.service.impl;
 import com.tencent.wxcloudrun.dao.GroupMapper;
 import com.tencent.wxcloudrun.dao.ProgressMapper;
 import com.tencent.wxcloudrun.dao.TaskMapper;
+import com.tencent.wxcloudrun.enums.ProgressStateEnum;
+import com.tencent.wxcloudrun.enums.TaskStateEnum;
 import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DO.Task;
@@ -52,7 +54,7 @@ public class TaskServiceImpl implements TaskService {
         task.setUtime(now);
         task.setCtime(now);
         task.setValid((byte) 1);
-        task.setState(1);
+        task.setState(TaskStateEnum.NOT_BEGIN.getCode());
         return task;
     }
 
@@ -62,7 +64,7 @@ public class TaskServiceImpl implements TaskService {
                 .groupId(task.getGroupId())
                 .taskId(task.getTaskId())
                 .userId(userId)
-                .state((byte) 1)
+                .state((short) ProgressStateEnum.TO_READ.getCode())
                 .ctime(now)
                 .utime(now)
                 .build();

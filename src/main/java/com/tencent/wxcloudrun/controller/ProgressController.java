@@ -4,12 +4,14 @@ import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.service.ProgressService;
 import org.apache.commons.collections4.CollectionUtils;
+import org.apache.commons.collections4.MapUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
+import java.util.Map;
 
 @RestController
 public class ProgressController {
@@ -33,6 +35,35 @@ public class ProgressController {
             return ApiResponse.ok();
         } else {
             return ApiResponse.error(-1, "modify failed");
+        }
+    }
+
+    @GetMapping("task/allprogress")
+    public ApiResponse getAllByTaskId(Long taskId) {
+        List<Progress> progressList = progressService.queryByTask(taskId);
+        if (CollectionUtils.isNotEmpty(progressList)) {
+            return ApiResponse.ok(progressList);
+        } else {
+            return ApiResponse.error(-1, "query failed");
+        }
+    }
+
+    @PostMapping("task/allprogress")
+    public ApiResponse batchModifyState(Long taskId, Integer targetState) {
+        if (progressService.modifyAllProgressState(taskId, targetState) > 0) {
+            return ApiResponse.ok();
+        } else {
+            return ApiResponse.error(-1, "modify failed");
+        }
+    }
+
+    @GetMapping("task/progress/statistic")
+    public ApiResponse getStatisticByTask(Long taskId) {
+        Map<Short, Long> countMap = progressService.getStatisticInfo(taskId);
+        if (MapUtils.isNotEmpty(countMap)) {
+            return ApiResponse.ok(countMap);
+        } else {
+            return ApiResponse.error(-1, "query failed");
         }
     }
 

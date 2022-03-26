@@ -15,8 +15,9 @@ public enum ProgressStateEnum {
     COMPLETED(201, "已完成"),
     CHECKED(202, "已审批"),
     REJECTED(203, "已拒绝"),
-    FINISHED(301, "已结束"),
-    EXPIRED(302, "已过期");
+    FINISHED_WITH_CHECKED(301, "已结束(已审批)"),
+    FINISHED_WITHOUT_CHECKED(302, "已结束(未审批)"),
+    EXPIRED(303, "已过期");
 
     int code;
     String desc;
@@ -27,7 +28,7 @@ public enum ProgressStateEnum {
     }
 
     public boolean isFinalState() {
-        return this == FINISHED || this == EXPIRED;
+        return this == FINISHED_WITH_CHECKED || this == FINISHED_WITHOUT_CHECKED || this == EXPIRED;
     }
 
     private static final Map<Integer, ProgressStateEnum> stateEnumMap;

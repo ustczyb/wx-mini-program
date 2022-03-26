@@ -17,6 +17,8 @@ public interface ProgressMapper {
 
     List<Progress> selectByUserIdProgressList(Long userId);
 
+    List<Progress> selectByTaskIdProgressList(Long taskId);
+
     List<Progress> selectByUserIdAndTaskIdProgressList(Long userId, Long taskId);
 
     int updateByPrimaryKeySelective(Progress record);

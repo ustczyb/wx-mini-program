@@ -16,9 +16,9 @@ public class Progress {
 
     private Long groupId;
 
-    private Byte userAccess;
+    private Short userAccess;
 
-    private Byte state;
+    private Short state;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ctime;
@@ -61,11 +61,11 @@ public class Progress {
         this.groupId = groupId;
     }
 
-    public Byte getState() {
+    public Short getState() {
         return state;
     }
 
-    public void setState(Byte state) {
+    public void setState(Short state) {
         this.state = state;
     }
 
@@ -85,11 +85,11 @@ public class Progress {
         this.utime = utime;
     }
 
-    public short getUserAccess() {
+    public Short getUserAccess() {
         return userAccess;
     }
 
-    public void setUserAccess(Byte userAccess) {
+    public void setUserAccess(Short userAccess) {
         this.userAccess = userAccess;
     }
 }

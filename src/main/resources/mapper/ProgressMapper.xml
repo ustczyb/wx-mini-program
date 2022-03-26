@@ -27,6 +27,12 @@
     where user_id = #{userId,jdbcType=INTEGER}
     and state &lt; 300
   </select>
+  <select id="selectByTaskIdProgressList" resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from progress_table
+    where task_id = #{taskId,jdbcType=INTEGER}
+  </select>
   <select id="selectByUserIdAndTaskIdProgressList" resultMap="BaseResultMap">
     select
     <include refid="Base_Column_List" />
@@ -131,8 +137,14 @@
   <update id="updateStateByUserIdAndTaskId">
     update progress_table
     set state = #{targetState,jdbcType=TINYINT}
-    where user_id = #{userId,jdbcType=BIGINT}
-    and    task_id = #{taskId,jdbcType=BIGINT}
+    <where>
+      <if test="userId != null">
+        user_id = #{userId}
+      </if>
+      <if test="taskId != null">
+        AND task_id = #{taskId}
+      </if>
+    </where>
   </update>
   <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     update progress_table
