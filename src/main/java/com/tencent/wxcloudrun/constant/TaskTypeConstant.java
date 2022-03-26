@@ -29,7 +29,7 @@ public class TaskTypeConstant {
         CONFIG_LIST.add(TaskTypeDTO.builder().code(200).desc(TYPE2).subTypeList(
                 Arrays.asList(TaskTypeDTO.builder().code(201).desc(TYPE2_SUBTYPE1).build(),
                         TaskTypeDTO.builder().code(202).desc(TYPE2_SUBTYPE2).build())).build());
-        CONFIG_LIST.add(TaskTypeDTO.builder().code(200).desc(TYPE2).subTypeList(
+        CONFIG_LIST.add(TaskTypeDTO.builder().code(300).desc(TYPE3).subTypeList(
                 Arrays.asList(TaskTypeDTO.builder().code(301).desc(TYPE3_SUBTYPE1).build(),
                         TaskTypeDTO.builder().code(302).desc(TYPE3_SUBTYPE2).build())).build());
     }
