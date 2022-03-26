@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service;
 
 import com.tencent.wxcloudrun.model.DO.Progress;
+import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 
 import java.util.List;
 import java.util.Map;
@@ -15,5 +16,5 @@ public interface ProgressService {
 
     int modifyAllProgressState(Long taskId, int targetState);
 
-    Map<Short, Long> getStatisticInfo(Long taskId);
+    ProgressStatisticDTO getStatisticInfo(Long taskId);
 }

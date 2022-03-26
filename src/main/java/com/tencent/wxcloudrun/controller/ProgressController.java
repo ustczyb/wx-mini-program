@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.DO.Progress;
+import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.service.ProgressService;
 import org.apache.commons.collections4.CollectionUtils;
@@ -38,7 +39,7 @@ public class ProgressController {
         }
     }
 
-    @GetMapping("task/allprogress")
+    @GetMapping("task/progress/all")
     public ApiResponse getAllByTaskId(Long taskId) {
         List<Progress> progressList = progressService.queryByTask(taskId);
         if (CollectionUtils.isNotEmpty(progressList)) {
@@ -48,7 +49,7 @@ public class ProgressController {
         }
     }
 
-    @PostMapping("task/allprogress")
+    @PostMapping("task/progress/state/all")
     public ApiResponse batchModifyState(Long taskId, Integer targetState) {
         if (progressService.modifyAllProgressState(taskId, targetState) > 0) {
             return ApiResponse.ok();
@@ -59,9 +60,9 @@ public class ProgressController {
 
     @GetMapping("task/progress/statistic")
     public ApiResponse getStatisticByTask(Long taskId) {
-        Map<Short, Long> countMap = progressService.getStatisticInfo(taskId);
-        if (MapUtils.isNotEmpty(countMap)) {
-            return ApiResponse.ok(countMap);
+        ProgressStatisticDTO statisticInfo = progressService.getStatisticInfo(taskId);
+        if (statisticInfo != null) {
+            return ApiResponse.ok(statisticInfo);
         } else {
             return ApiResponse.error(-1, "query failed");
         }

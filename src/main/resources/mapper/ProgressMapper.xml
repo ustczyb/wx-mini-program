@@ -6,8 +6,8 @@
     <result column="task_id" jdbcType="BIGINT" property="taskId" />
     <result column="user_id" jdbcType="BIGINT" property="userId" />
     <result column="group_id" jdbcType="BIGINT" property="groupId" />
-    <result column="user_access" jdbcType="TINYINT" property="userAccess" />
-    <result column="state" jdbcType="TINYINT" property="state" />
+    <result column="user_access" jdbcType="SMALLINT" property="userAccess" />
+    <result column="state" jdbcType="SMALLINT" property="state" />
     <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
     <result column="utime" jdbcType="TIMESTAMP" property="utime" />
   </resultMap>
@@ -49,7 +49,7 @@
       group_id, user_access, state, ctime,
       utime)
     values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{groupId,jdbcType=BIGINT}, #{userAccess,jdbcType=TINYINT}, #{state,jdbcType=TINYINT}, #{ctime,jdbcType=TIMESTAMP},
+      #{groupId,jdbcType=BIGINT}, #{userAccess,jdbcType=SMALLINT}, #{state,jdbcType=SMALLINT}, #{ctime,jdbcType=TIMESTAMP},
       #{utime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
@@ -94,10 +94,10 @@
         #{groupId,jdbcType=BIGINT},
       </if>
       <if test="userAccess != null">
-        #{user_access,jdbcType=TINYINT},
+        #{user_access,jdbcType=SMALLINT},
       </if>
       <if test="state != null">
-        #{state,jdbcType=TINYINT},
+        #{state,jdbcType=SMALLINT},
       </if>
       <if test="ctime != null">
         #{ctime,jdbcType=TIMESTAMP},
@@ -120,10 +120,10 @@
         group_id = #{groupId,jdbcType=BIGINT},
       </if>
       <if test="userAccess != null">
-        user_access = #{userAccess,jdbcType=TINYINT},
+        user_access = #{userAccess,jdbcType=SMALLINT},
       </if>
       <if test="state != null">
-        state = #{state,jdbcType=TINYINT},
+        state = #{state,jdbcType=SMALLINT},
       </if>
       <if test="ctime != null">
         ctime = #{ctime,jdbcType=TIMESTAMP},
@@ -136,7 +136,7 @@
   </update>
   <update id="updateStateByUserIdAndTaskId">
     update progress_table
-    set state = #{targetState,jdbcType=TINYINT}
+    set state = #{targetState,jdbcType=SMALLINT}
     <where>
       <if test="userId != null">
         user_id = #{userId}
@@ -151,8 +151,8 @@
     set task_id = #{taskId,jdbcType=BIGINT},
       user_id = #{userId,jdbcType=BIGINT},
       group_id = #{groupId,jdbcType=BIGINT},
-      user_access = #{userAccess,jdbcType=TINYINT},
-      state = #{state,jdbcType=TINYINT},
+      user_access = #{userAccess,jdbcType=SMALLINT},
+      state = #{state,jdbcType=SMALLINT},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}

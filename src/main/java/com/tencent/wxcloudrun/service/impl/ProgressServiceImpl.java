@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.dao.ProgressMapper;
 import com.tencent.wxcloudrun.model.DO.Progress;
+import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 import com.tencent.wxcloudrun.service.ProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -40,10 +41,10 @@ public class ProgressServiceImpl implements ProgressService {
     }
 
     @Override
-    public Map<Short, Long> getStatisticInfo(Long taskId) {
+    public ProgressStatisticDTO getStatisticInfo(Long taskId) {
         List<Progress> progressList = progressMapper.selectByTaskIdProgressList(taskId);;
         Map<Short, Long> countMap = progressList.stream().collect(Collectors.groupingBy(Progress::getState, Collectors.counting()));;
-        return countMap;
+        return ProgressStatisticDTO.builder().taskId(taskId).countMap(countMap).build();
     }
 
 
