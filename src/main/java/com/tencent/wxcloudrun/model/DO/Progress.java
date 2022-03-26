@@ -20,6 +20,8 @@ public class Progress {
 
     private Short state;
 
+    private String extension;
+
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ctime;
 
@@ -91,5 +93,13 @@ public class Progress {
 
     public void setUserAccess(Short userAccess) {
         this.userAccess = userAccess;
+    }
+
+    public String getExtension() {
+        return extension;
+    }
+
+    public void setExtension(String extension) {
+        this.extension = extension;
     }
 }

@@ -71,8 +71,14 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public int modifyTask(Task task) {
-        return taskMapper.updateByPrimaryKeySelective(task);
+    @Transactional(rollbackFor = Exception.class)
+    public int modifyTask(Task task, Short targetState) {
+        int modifyStatus = taskMapper.updateByPrimaryKeySelective(task);
+        if (targetState != null) {
+            return progressMapper.updateStateByUserIdAndTaskId(null, task.getTaskId(), targetState);
+        } else {
+            return modifyStatus;
+        }
     }
 
     @Override

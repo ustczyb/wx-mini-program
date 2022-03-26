@@ -10,7 +10,7 @@ public interface TaskService {
 
     int createTask(Task task, List<Long> userIdList);
 
-    int modifyTask(Task task);
+    int modifyTask(Task task, Short targetState);
 
     Task queryByTaskId(Long taskId);
 

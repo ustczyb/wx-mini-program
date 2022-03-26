@@ -33,9 +33,9 @@ public class TaskController {
     }
 
     @PostMapping("task/task")
-    public ApiResponse modifyTaskInfo(Task task) {
-        int createRes = taskService.modifyTask(task);
-        if (createRes > 0) {
+    public ApiResponse modifyTaskInfo(Task task, Short targetState) {
+        int modifyRes = taskService.modifyTask(task, targetState);
+        if (modifyRes > 0) {
             return ApiResponse.ok();
         } else {
             return ApiResponse.error(-1, "create task failed!");

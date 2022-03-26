@@ -46,6 +46,8 @@ public class Task {
 
     private Date utime;
 
+    private String desc;
+
     private String content;
 
     public Long getTaskId() {
@@ -182,5 +184,13 @@ public class Task {
 
     public void setContent(String content) {
         this.content = content == null ? null : content.trim();
+    }
+
+    public String getDesc() {
+        return desc;
+    }
+
+    public void setDesc(String desc) {
+        this.desc = desc;
     }
 }
