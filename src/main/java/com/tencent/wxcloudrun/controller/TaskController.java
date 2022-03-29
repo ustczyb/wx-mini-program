@@ -33,7 +33,7 @@ public class TaskController {
     }
 
     @PostMapping("task/task")
-    public ApiResponse modifyTaskInfo(Task task, Short targetState) {
+    public ApiResponse modifyTaskInfo(Task task, Integer targetState) {
         int modifyRes = taskService.modifyTask(task, targetState);
         if (modifyRes > 0) {
             return ApiResponse.ok();

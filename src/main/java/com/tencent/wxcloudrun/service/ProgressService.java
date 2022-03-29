@@ -16,5 +16,7 @@ public interface ProgressService {
 
     int modifyAllProgressState(Long taskId, int targetState);
 
+    int modifyToEndState(Long taskId);
+
     ProgressStatisticDTO getStatisticInfo(Long taskId);
 }

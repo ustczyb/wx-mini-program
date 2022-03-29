@@ -41,12 +41,12 @@ public class TaskServiceImpl implements TaskService {
     @Transactional(rollbackFor={Exception.class})
     public int createTask(Task task, List<Long> userIdList) {
         Task newTask = buildTask(task);
-        int insertTaskRes = taskMapper.insertSelective(task);
+        int insertTaskRes = taskMapper.insertSelective(newTask);
         for (Long userId : userIdList) {
-            Progress progress = buildProgress(task, userId);
+            Progress progress = buildProgress(newTask, userId);
             progressMapper.insertSelective(progress);
         }
-        return 1;
+        return insertTaskRes;
     }
 
     private Task buildTask(Task task) {
@@ -72,10 +72,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int modifyTask(Task task, Short targetState) {
+    public int modifyTask(Task task, Integer targetState) {
         int modifyStatus = taskMapper.updateByPrimaryKeySelective(task);
         if (targetState != null) {
-            return progressMapper.updateStateByUserIdAndTaskId(null, task.getTaskId(), targetState);
+            return progressMapper.updateStateByUserIdAndTaskId(null, task.getTaskId(), null, targetState);
         } else {
             return modifyStatus;
         }

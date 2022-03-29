@@ -10,8 +10,8 @@
     <result column="title" jdbcType="VARCHAR" property="title" />
     <result column="desc" jdbcType="VARCHAR" property="desc" />
     <result column="tags" jdbcType="VARCHAR" property="tags" />
-    <result column="trigger_type" jdbcType="TINYINT" property="triggerType" />
-    <result column="task_type" jdbcType="TINYINT" property="taskType" />
+    <result column="trigger_type" jdbcType="SMALLINT" property="triggerType" />
+    <result column="task_type" jdbcType="SMALLINT" property="taskType" />
     <result column="expect_start_time" jdbcType="TIMESTAMP" property="expectStartTime" />
     <result column="actual_start_time" jdbcType="TIMESTAMP" property="actualStartTime" />
     <result column="expect_finished_time" jdbcType="TIMESTAMP" property="expectFinishedTime" />
@@ -72,7 +72,7 @@
     <include refid="Blob_Column_List" />
     from task_table
     where create_user_id = #{createUserId,jdbcType=BIGINT}
-    and state = 1
+    and state in (100, 200)
   </select>
   <delete id="deleteByPrimaryKey" parameterType="java.lang.Long">
     delete from task_table
@@ -87,7 +87,7 @@
       utime, content)
     values (#{taskId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT},
       #{valid,jdbcType=TINYINT}, #{state,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR} #{tags,jdbcType=VARCHAR},
-      #{triggerType,jdbcType=TINYINT}, #{taskType,jdbcType=TINYINT}, #{expectStartTime,jdbcType=TIMESTAMP}, 
+      #{triggerType,jdbcType=SMALLINT}, #{taskType,jdbcType=SMALLINT}, #{expectStartTime,jdbcType=TIMESTAMP},
       #{actualStartTime,jdbcType=TIMESTAMP}, #{expectFinishedTime,jdbcType=TIMESTAMP}, 
       #{actualFinishedTime,jdbcType=TIMESTAMP}, #{bbsId,jdbcType=BIGINT}, #{ctime,jdbcType=TIMESTAMP}, 
       #{utime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
@@ -176,10 +176,10 @@
         #{tags,jdbcType=VARCHAR},
       </if>
       <if test="triggerType != null">
-        #{triggerType,jdbcType=TINYINT},
+        #{triggerType,jdbcType=SMALLINT},
       </if>
       <if test="taskType != null">
-        #{taskType,jdbcType=TINYINT},
+        #{taskType,jdbcType=SMALLINT},
       </if>
       <if test="expectStartTime != null">
         #{expectStartTime,jdbcType=TIMESTAMP},
@@ -232,10 +232,10 @@
         tags = #{tags,jdbcType=VARCHAR},
       </if>
       <if test="triggerType != null">
-        trigger_type = #{triggerType,jdbcType=TINYINT},
+        trigger_type = #{triggerType,jdbcType=SMALLINT},
       </if>
       <if test="taskType != null">
-        task_type = #{taskType,jdbcType=TINYINT},
+        task_type = #{taskType,jdbcType=SMALLINT},
       </if>
       <if test="expectStartTime != null">
         expect_start_time = #{expectStartTime,jdbcType=TIMESTAMP},
@@ -273,8 +273,8 @@
       title = #{title,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
-      trigger_type = #{triggerType,jdbcType=TINYINT},
-      task_type = #{taskType,jdbcType=TINYINT},
+      trigger_type = #{triggerType,jdbcType=SMALLINT},
+      task_type = #{taskType,jdbcType=SMALLINT},
       expect_start_time = #{expectStartTime,jdbcType=TIMESTAMP},
       actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
       expect_finished_time = #{expectFinishedTime,jdbcType=TIMESTAMP},
@@ -294,8 +294,8 @@
       title = #{title,jdbcType=VARCHAR},
       `desc` = #{desc,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
-      trigger_type = #{triggerType,jdbcType=TINYINT},
-      task_type = #{taskType,jdbcType=TINYINT},
+      trigger_type = #{triggerType,jdbcType=SMALLINT},
+      task_type = #{taskType,jdbcType=SMALLINT},
       expect_start_time = #{expectStartTime,jdbcType=TIMESTAMP},
       actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
       expect_finished_time = #{expectFinishedTime,jdbcType=TIMESTAMP},

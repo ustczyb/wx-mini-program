@@ -18,9 +18,9 @@ public class Task {
 
     private String title;
 
-    private Byte triggerType;
+    private Short triggerType;
 
-    private Byte taskType;
+    private Short taskType;
 
     private String tags;
 
@@ -98,19 +98,19 @@ public class Task {
         this.title = title == null ? null : title.trim();
     }
 
-    public Byte getTriggerType() {
+    public Short getTriggerType() {
         return triggerType;
     }
 
-    public void setTriggerType(Byte triggerType) {
+    public void setTriggerType(Short triggerType) {
         this.triggerType = triggerType;
     }
 
-    public Byte getTaskType() {
+    public Short getTaskType() {
         return taskType;
     }
 
-    public void setTaskType(Byte taskType) {
+    public void setTaskType(Short taskType) {
         this.taskType = taskType;
     }
 

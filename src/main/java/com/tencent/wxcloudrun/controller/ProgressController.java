@@ -49,6 +49,16 @@ public class ProgressController {
         }
     }
 
+    @PostMapping("task/progress/state/end")
+    public ApiResponse modifyToEndState(Long taskId) {
+        int res = progressService.modifyToEndState(taskId);
+        if (res > 0) {
+            return ApiResponse.ok();
+        } else {
+            return ApiResponse.error(-1, "failed");
+        }
+    }
+
     @PostMapping("task/progress/state/all")
     public ApiResponse batchModifyState(Long taskId, Integer targetState) {
         if (progressService.modifyAllProgressState(taskId, targetState) > 0) {

@@ -1,6 +1,8 @@
 spring:
   datasource:
     driver-class-name: com.mysql.cj.jdbc.Driver
-    url: jdbc:mysql://127.0.0.1:3306/mini_program
+    url: jdbc:mysql://sh-cynosdbmysql-grp-hsaybh5q.sql.tencentcdb.com:28055/springboot_demo
+#    url: jdbc:mysql://127.0.0.1:3306/mini_program
     username: root
-    password: helloworld
+    password: 6iGaVJk9cuC4cvL
+#    password: helloworld

@@ -154,7 +154,15 @@
       <if test="taskId != null">
         AND task_id = #{taskId}
       </if>
+      <if test="curState != null">
+        AND `state` = #{curState}
+      </if>
     </where>
+  </update>
+  <update id="expireTask">
+    update progress_table
+    set state = 303
+    where task_id = #{taskId} and state in (101, 102, 203)
   </update>
   <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     update progress_table

@@ -1,11 +1,13 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.dao.ProgressMapper;
+import com.tencent.wxcloudrun.enums.ProgressStateEnum;
 import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 import com.tencent.wxcloudrun.service.ProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import java.util.AbstractMap;
 import java.util.AbstractMap.SimpleEntry;
@@ -32,12 +34,21 @@ public class ProgressServiceImpl implements ProgressService {
 
     @Override
     public int modifyProgressState(Long userId, Long taskId, int targetState) {
-        return progressMapper.updateStateByUserIdAndTaskId(userId, taskId, targetState);
+        return progressMapper.updateStateByUserIdAndTaskId(userId, taskId, null, targetState);
     }
 
     @Override
     public int modifyAllProgressState(Long taskId, int targetState) {
-        return progressMapper.updateStateByUserIdAndTaskId(null, taskId, targetState);
+        return progressMapper.updateStateByUserIdAndTaskId(null, taskId, null, targetState);
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int modifyToEndState(Long taskId) {
+        progressMapper.updateStateByUserIdAndTaskId(null, taskId, ProgressStateEnum.COMPLETED.getCode(), ProgressStateEnum.FINISHED_WITHOUT_CHECKED.getCode());
+        progressMapper.updateStateByUserIdAndTaskId(null, taskId, ProgressStateEnum.CHECKED.getCode(), ProgressStateEnum.FINISHED_WITH_CHECKED.getCode());
+        progressMapper.expireTask(taskId);
+        return 1;
     }
 
     @Override
