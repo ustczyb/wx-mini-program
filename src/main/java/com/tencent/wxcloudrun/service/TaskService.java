@@ -14,7 +14,7 @@ public interface TaskService {
 
     Task queryByTaskId(Long taskId);
 
-    GroupTaskDTO queryByGroupId(Long groupId);
+    GroupTaskDTO queryByGroupId(Long groupId, Long userId);
 
     List<GroupTaskDTO> queryEffectiveTaskByUserId(Long userId);
 

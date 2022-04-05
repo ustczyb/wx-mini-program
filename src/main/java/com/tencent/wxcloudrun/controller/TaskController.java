@@ -42,6 +42,12 @@ public class TaskController {
         }
     }
 
+    @PostMapping("task/access")
+    public ApiResponse grantTaskAccess(Long taskId, Long userId, String targetUserIdStr) {
+        // TODO
+        return ApiResponse.ok();
+    }
+
     @PutMapping("task/task")
     public ApiResponse createTask(Task task, String userIds) {
         int createRes = taskService.createTask(task, ConvertUtils.string2idList(userIds));
@@ -54,7 +60,7 @@ public class TaskController {
 
     @GetMapping("group/tasklist")
     public ApiResponse queryByGroupId(Long groupId, Long userId) {
-        GroupTaskDTO groupTaskDTO = taskService.queryByGroupId(groupId);
+        GroupTaskDTO groupTaskDTO = taskService.queryByGroupId(groupId, userId);
         if (groupTaskDTO != null) {
             return ApiResponse.ok(groupTaskDTO.getTaskList());
         } else {

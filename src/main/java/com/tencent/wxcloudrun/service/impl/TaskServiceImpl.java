@@ -9,6 +9,7 @@ import com.tencent.wxcloudrun.model.DO.Group;
 import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DO.Task;
 import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
+import com.tencent.wxcloudrun.model.DTO.TaskProgressDTO;
 import com.tencent.wxcloudrun.service.TaskService;
 import org.apache.commons.lang3.time.DateUtils;
 import org.slf4j.Logger;
@@ -17,11 +18,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.Calendar;
-import java.util.Date;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 import java.util.stream.Collectors;
+import java.util.stream.IntStream;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -38,7 +37,7 @@ public class TaskServiceImpl implements TaskService {
     private GroupMapper groupMapper;
 
     @Override
-    @Transactional(rollbackFor={Exception.class})
+    @Transactional(rollbackFor = {Exception.class})
     public int createTask(Task task, List<Long> userIdList) {
         Task newTask = buildTask(task);
         int insertTaskRes = taskMapper.insertSelective(newTask);
@@ -87,10 +86,16 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public GroupTaskDTO queryByGroupId(Long groupId) {
-        Group group = groupMapper.selectByPrimaryKey(groupId);
+    public GroupTaskDTO queryByGroupId(Long groupId, Long userId) {
         List<Task> taskList = taskMapper.queryByGroupIdTasks(groupId);
-        return GroupTaskDTO.builder().group(group).taskList(taskList).build();
+        return buildGroupTaskDTO(groupId, userId, taskList);
+    }
+
+    private Map<String, Object> buildParamMap(Long userId, List<Long> taskIdList) {
+        Map<String, Object> paramMap = new HashMap<>(2);
+        paramMap.put("userId", userId);
+        paramMap.put("taskIds", taskIdList);
+        return paramMap;
     }
 
     @Override
@@ -99,21 +104,36 @@ public class TaskServiceImpl implements TaskService {
         List<Progress> progressList = progressMapper.selectByUserIdProgressList(userId);
         List<Long> taskIdList = progressList.stream().map(Progress::getTaskId).collect(Collectors.toList());
         // 2.find corresponding tasks
-        List<Task> taskList = taskMapper.selectByIds(taskIdList);
+        List<Task> taskList = taskMapper.selectByIds(taskIdList).stream()
+                .filter(p -> !Objects.equals(p.getState(), TaskStateEnum.ENDED.getCode()))
+                .sorted(Comparator.comparing(Task::getExpectFinishedTime))
+                .collect(Collectors.toList());
         Map<Long, List<Task>> groupTaskMap = taskList.stream().filter(x -> x.getExpectFinishedTime().after(new Date())).collect(Collectors.groupingBy(Task::getGroupId));
-        return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), e.getValue())).collect(Collectors.toList());
+        return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), userId, e.getValue())).collect(Collectors.toList());
     }
 
     @Override
     public List<GroupTaskDTO> queryTaskByOwner(Long userId) {
-        List<Task> taskList = taskMapper.selectByCreateUserIdTasks(userId);
+        List<Task> taskList = taskMapper.selectByCreateUserIdTasks(userId).stream()
+                .filter(p -> !Objects.equals(p.getState(), TaskStateEnum.ENDED.getCode()))
+                .sorted(Comparator.comparing(Task::getExpectFinishedTime))
+                .collect(Collectors.toList());
         Map<Long, List<Task>> groupTaskMap = taskList.stream().filter(x -> x.getExpectFinishedTime().after(new Date())).collect(Collectors.groupingBy(Task::getGroupId));
-        return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), e.getValue())).collect(Collectors.toList());
+        return groupTaskMap.entrySet().stream().map(e -> buildGroupTaskDTO(e.getKey(), userId, e.getValue())).collect(Collectors.toList());
     }
 
-    private GroupTaskDTO buildGroupTaskDTO(Long groupId, List<Task> tasks) {
+    private GroupTaskDTO buildGroupTaskDTO(Long groupId, Long userId, List<Task> tasks) {
         Group group = groupMapper.selectByPrimaryKey(groupId);
-        return GroupTaskDTO.builder().group(group).taskList(tasks).build();
+        List<Long> taskIdList = tasks.stream().map(Task::getTaskId).collect(Collectors.toList());
+        Map<Long, List<Progress>> progressMap = progressMapper.selectByUserIdAndTaskIds(buildParamMap(userId, taskIdList)).stream().collect(Collectors.groupingBy(Progress::getTaskId));
+        List<TaskProgressDTO> taskProgressDTOList = tasks.stream()
+                .filter(t -> progressMap.get(t.getTaskId()) != null)
+                .map(t -> TaskProgressDTO.builder()
+                        .task(t)
+                        .progress(progressMap.get(t.getTaskId()).get(0))
+                        .build())
+                .collect(Collectors.toList());
+        return GroupTaskDTO.builder().group(group).taskList(taskProgressDTOList).build();
     }
 
     @Override

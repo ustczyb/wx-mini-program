@@ -1,7 +1,6 @@
 package com.tencent.wxcloudrun.model.DTO;
 
 import com.tencent.wxcloudrun.model.DO.Group;
-import com.tencent.wxcloudrun.model.DO.Task;
 import lombok.Builder;
 import lombok.Data;
 import lombok.experimental.Tolerate;
@@ -14,7 +13,7 @@ public class GroupTaskDTO {
 
     private Group group;
 
-    private List<Task> taskList;
+    private List<TaskProgressDTO> taskList;
 
     @Tolerate
     public GroupTaskDTO() {}
