@@ -27,6 +27,8 @@ public interface TaskMapper {
 
     int updateByPrimaryKey(Task record);
 
+    int batchUpdateTaskState(@Param("taskIds") List<Long> taskIds, @Param("state") int state);
+
     List<Task> queryByGroupIdTasks(Long groupId);
 
     List<Task> queryByEnddate(@Param("startTime")Date startTime, @Param("endTime") Date endTime);

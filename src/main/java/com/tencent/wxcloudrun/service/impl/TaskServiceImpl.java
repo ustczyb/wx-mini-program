@@ -71,10 +71,10 @@ public class TaskServiceImpl implements TaskService {
 
     @Override
     @Transactional(rollbackFor = Exception.class)
-    public int modifyTask(Task task, Integer targetState) {
+    public int modifyTask(Task task, Integer targetProgressState) {
         int modifyStatus = taskMapper.updateByPrimaryKeySelective(task);
-        if (targetState != null) {
-            return progressMapper.updateStateByUserIdAndTaskId(null, task.getTaskId(), null, targetState);
+        if (targetProgressState != null) {
+            return progressMapper.updateStateByUserIdAndTaskId(null, task.getTaskId(), null, targetProgressState);
         } else {
             return modifyStatus;
         }
@@ -149,6 +149,5 @@ public class TaskServiceImpl implements TaskService {
                 .collect(Collectors.toList());
         return taskList;
     }
-
 
 }

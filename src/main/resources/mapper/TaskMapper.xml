@@ -305,4 +305,12 @@
       utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{taskId,jdbcType=BIGINT}
   </update>
+  <update id="batchUpdateTaskState">
+    update task_table
+    set state = #{state,jdbcType=INTEGER}
+    where id in
+    <foreach collection="list" item="ids" open="(" separator="," close=")">
+      #{taskIds}
+    </foreach>
+  </update>
 </mapper>

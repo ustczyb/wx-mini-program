@@ -1,6 +1,7 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.dao.ProgressMapper;
+import com.tencent.wxcloudrun.dao.TaskMapper;
 import com.tencent.wxcloudrun.enums.ProgressStateEnum;
 import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
@@ -21,6 +22,9 @@ public class ProgressServiceImpl implements ProgressService {
 
     @Autowired
     private ProgressMapper progressMapper;
+
+    @Autowired
+    private TaskMapper taskMapper;
 
     @Override
     public List<Progress> queryByUserAndTask(Long userId, Long taskId) {
