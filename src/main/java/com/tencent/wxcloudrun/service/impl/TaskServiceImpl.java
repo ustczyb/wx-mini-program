@@ -72,6 +72,11 @@ public class TaskServiceImpl implements TaskService {
     @Override
     @Transactional(rollbackFor = Exception.class)
     public int modifyTask(Task task, Integer targetProgressState) {
+        Task originTask = taskMapper.selectByPrimaryKey(task.getTaskId());
+        if (Objects.equals(originTask.getState(), TaskStateEnum.ENDED.getCode())) {
+            LOGGER.warn("task {} has been ended.", originTask.getTaskId());
+            return -1;
+        }
         int modifyStatus = taskMapper.updateByPrimaryKeySelective(task);
         if (targetProgressState != null) {
             return progressMapper.updateStateByUserIdAndTaskId(null, task.getTaskId(), null, targetProgressState);

@@ -4,7 +4,6 @@ import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 
 import java.util.List;
-import java.util.Map;
 
 public interface ProgressService {
 
