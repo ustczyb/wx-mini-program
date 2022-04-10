@@ -23,6 +23,9 @@ public class Progress {
     private String extension;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
+    private Date lastViewTime;
+
+    @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date ctime;
 
     @JsonFormat(pattern = "yyyy-MM-dd HH:mm:ss")
@@ -101,5 +104,13 @@ public class Progress {
 
     public void setExtension(String extension) {
         this.extension = extension;
+    }
+
+    public Date getLastViewTime() {
+        return lastViewTime;
+    }
+
+    public void setLastViewTime(Date lastViewTime) {
+        this.lastViewTime = lastViewTime;
     }
 }

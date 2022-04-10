@@ -12,7 +12,7 @@ public interface TaskService {
 
     int modifyTask(Task task, Integer targetProgressState);
 
-    Task queryByTaskId(Long taskId);
+    Task queryByTaskId(Long taskId, Long userId);
 
     GroupTaskDTO queryByGroupId(Long groupId, Long userId);
 

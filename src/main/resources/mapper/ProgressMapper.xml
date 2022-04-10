@@ -9,11 +9,12 @@
     <result column="user_access" jdbcType="SMALLINT" property="userAccess" />
     <result column="state" jdbcType="SMALLINT" property="state" />
     <result column="ext" jdbcType="VARCHAR" property="extension" />
+    <result column="last_view_time" jdbcType="TIMESTAMP" property="lastViewTime" />
     <result column="ctime" jdbcType="TIMESTAMP" property="ctime" />
     <result column="utime" jdbcType="TIMESTAMP" property="utime" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, task_id, user_id, group_id, user_access, state, ext, ctime, utime
+    id, task_id, user_id, group_id, user_access, state, ext, last_view_time, ctime, utime
   </sql>
   <select id="selectByPrimaryKey" parameterType="java.lang.Integer" resultMap="BaseResultMap">
     select 
@@ -85,11 +86,11 @@
   </delete>
   <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     insert into progress_table (id, task_id, user_id, 
-      group_id, user_access, state, ext, ctime,
+      group_id, user_access, state, ext, last_view_time, ctime,
       utime)
     values (#{id,jdbcType=INTEGER}, #{taskId,jdbcType=BIGINT}, #{userId,jdbcType=BIGINT}, 
-      #{groupId,jdbcType=BIGINT}, #{userAccess,jdbcType=SMALLINT}, #{state,jdbcType=SMALLINT}, #{extension,jdbcType=VARCHAR}, #{ctime,jdbcType=TIMESTAMP},
-      #{utime,jdbcType=TIMESTAMP})
+      #{groupId,jdbcType=BIGINT}, #{userAccess,jdbcType=SMALLINT}, #{state,jdbcType=SMALLINT}, #{extension,jdbcType=VARCHAR},
+      #{lastViewTime,jdbcType=TIMESTAMP}, #{ctime,jdbcType=TIMESTAMP},#{utime,jdbcType=TIMESTAMP})
   </insert>
   <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.Progress">
     insert into progress_table
@@ -114,6 +115,9 @@
       </if>
       <if test="extension != null">
         ext,
+      </if>
+      <if test="lastViewTime != null">
+        last_view_time,
       </if>
       <if test="ctime != null">
         ctime,
@@ -144,6 +148,9 @@
       <if test="extension != null">
         #{extension,jdbcType=VARCHAR},
       </if>
+      <if test="lastViewTime != null">
+        #{lastViewTime,jdbcType=TIMESTAMP},
+      </if>
       <if test="ctime != null">
         #{ctime,jdbcType=TIMESTAMP},
       </if>
@@ -172,6 +179,9 @@
       </if>
       <if test="extension != null">
         ext = #{extension,jdbcType=VARCHAR},
+      </if>
+      <if test="lastViewTime != null">
+        ext = #{lastViewTime,jdbcType=TIMESTAMP},
       </if>
       <if test="ctime != null">
         ctime = #{ctime,jdbcType=TIMESTAMP},
@@ -210,8 +220,21 @@
       user_access = #{userAccess,jdbcType=SMALLINT},
       state = #{state,jdbcType=SMALLINT},
       ext = #{extension,jdbcType=VARCHAR},
+      last_view_time = #{lastViewTime,jdbcType=TIMESTAMP},
       ctime = #{ctime,jdbcType=TIMESTAMP},
       utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=INTEGER}
+  </update>
+  <update id="updateLastViewTime">
+    update progress_table
+    set last_view_time = now()
+    <where>
+      <if test="userId != null">
+        user_id = #{userId}
+      </if>
+      <if test="taskId != null">
+        AND task_id = #{taskId}
+      </if>
+    </where>
   </update>
 </mapper>

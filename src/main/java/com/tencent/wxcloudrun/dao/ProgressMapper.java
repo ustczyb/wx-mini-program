@@ -32,6 +32,8 @@ public interface ProgressMapper {
 
     int updateStateByUserIdAndTaskId(Long userId, Long taskId, Integer curState, Integer targetState);
 
+    int updateLastViewTime(Long userId, Long taskId);
+
     int expireTask(Long taskId);
 
     int updateByPrimaryKey(Progress record);

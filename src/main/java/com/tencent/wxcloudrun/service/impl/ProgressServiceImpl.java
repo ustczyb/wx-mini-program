@@ -38,13 +38,13 @@ public class ProgressServiceImpl implements ProgressService {
 
     @Override
     @TaskStateCheck
-    public int modifyProgressState(Long userId, Long taskId, int targetState) {
+    public int modifyProgressState(Long userId, Long taskId, Integer targetState) {
         return progressMapper.updateStateByUserIdAndTaskId(userId, taskId, null, targetState);
     }
 
     @Override
     @TaskStateCheck
-    public int modifyAllProgressState(Long taskId, int targetState) {
+    public int modifyAllProgressState(Long taskId, Integer targetState) {
         return progressMapper.updateStateByUserIdAndTaskId(null, taskId, null, targetState);
     }
 

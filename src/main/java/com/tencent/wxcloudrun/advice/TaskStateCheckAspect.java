@@ -48,10 +48,10 @@ public class TaskStateCheckAspect {
         }
     }
 
-    private Method getMethodByClassAndName(String classType, String methodName) throws ClassNotFoundException, NoSuchMethodException {
+    private Method getMethodByClassAndName(String classType, String methodName, Class<?>[] methodArgTypes) throws ClassNotFoundException, NoSuchMethodException {
         String key = classType + "_" + methodName;
         if (nameMethodMap.get(key) == null) {
-            Method method = Class.forName(classType).getMethod(methodName);
+            Method method = Class.forName(classType).getMethod(methodName, methodArgTypes);
             nameMethodMap.put(key, method);
         }
         return nameMethodMap.get(key);
@@ -62,8 +62,15 @@ public class TaskStateCheckAspect {
         String methodName = joinPoint.getSignature().getName();
         // 参数值
         Object[] args = joinPoint.getArgs();
+        Class<?>[] methodArgTypes = new Class[args.length];
+        for (int k = 0; k < args.length; k++) {
+            if (!args[k].getClass().isPrimitive()) {
+                // 获取的是封装类型而不是基础类型
+                methodArgTypes[k] = args[k].getClass();
+            }
+        }
         // 获取指定的方法，第二个参数可以不传，但是为了防止有重载的现象，还是需要传入参数的类型
-        Method method = getMethodByClassAndName(classType, methodName);
+        Method method = getMethodByClassAndName(classType, methodName, methodArgTypes);
         // 参数名
         String[] parameterNames = parameterNameDiscoverer.getParameterNames(method);
         for (int i = 0; i < parameterNames.length; i++) {

@@ -23,8 +23,8 @@ public class TaskController {
     private TaskService taskService;
 
     @GetMapping("task/task")
-    public ApiResponse queryByTaskId(Long taskId) {
-        Task task = taskService.queryByTaskId(taskId);
+    public ApiResponse queryByTaskId(Long taskId, Long userId) {
+        Task task = taskService.queryByTaskId(taskId, userId);
         if (task != null) {
             return ApiResponse.ok(task);
         } else {

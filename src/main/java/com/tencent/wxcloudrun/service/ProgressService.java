@@ -11,9 +11,9 @@ public interface ProgressService {
 
     List<Progress> queryByTask(Long taskId);
 
-    int modifyProgressState(Long userId, Long taskId, int targetState);
+    int modifyProgressState(Long userId, Long taskId, Integer targetState);
 
-    int modifyAllProgressState(Long taskId, int targetState);
+    int modifyAllProgressState(Long taskId, Integer targetState);
 
     int modifyToEndState(Long taskId);
 

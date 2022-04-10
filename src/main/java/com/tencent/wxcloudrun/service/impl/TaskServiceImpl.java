@@ -86,7 +86,8 @@ public class TaskServiceImpl implements TaskService {
     }
 
     @Override
-    public Task queryByTaskId(Long taskId) {
+    public Task queryByTaskId(Long taskId, Long userId) {
+        progressMapper.updateLastViewTime(userId, taskId);
         return taskMapper.selectByPrimaryKey(taskId);
     }
 
