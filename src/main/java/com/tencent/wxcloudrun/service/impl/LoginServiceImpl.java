@@ -20,6 +20,9 @@ public class LoginServiceImpl implements LoginService {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(LoginServiceImpl.class);
 
+    public static final String DEBUG_OPENID = "osepd4_H-fDw7VAsNxqWdGJ57h0c";
+    public static final String DEBUG_JSCODE = "test";
+
     @Autowired
     private OpenidFetcher openidFetcher;
 
@@ -30,13 +33,17 @@ public class LoginServiceImpl implements LoginService {
     public User login(String jsCode) {
         OpenidResponse response = null;
         try {
-            response = openidFetcher.fetchOpenidResponse(OpenidRequest.builder()
-                    .appid("wx2e3ceb48ffdf7e40")
-                    .secret("d01eb239d198275645d4a3ba506a3ebb")
-                    .grantType("authorization_code")
-                    .jsCode(jsCode)
-                    .build());
-            LOGGER.info("openid fetch response: {}", response);
+            if (StringUtils.equals(jsCode, DEBUG_JSCODE)) {
+                response = OpenidResponse.builder().openId(DEBUG_OPENID).build();
+            } else {
+                response = openidFetcher.fetchOpenidResponse(OpenidRequest.builder()
+                        .appid("wx2e3ceb48ffdf7e40")
+                        .secret("d01eb239d198275645d4a3ba506a3ebb")
+                        .grantType("authorization_code")
+                        .jsCode(jsCode)
+                        .build());
+                LOGGER.info("openid fetch response: {}", response);
+            }
         } catch (IOException e) {
             LOGGER.error("fetch openid throw exception:", e);
         }

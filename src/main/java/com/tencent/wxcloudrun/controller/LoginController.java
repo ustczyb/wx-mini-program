@@ -1,16 +1,21 @@
 package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.DO.User;
+import com.tencent.wxcloudrun.model.DTO.login.LoginResponse;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.model.common.login.*;
 import com.tencent.wxcloudrun.service.LoginService;
+import com.tencent.wxcloudrun.utils.JwtUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.PutMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.Collections;
 
 @RestController
 public class LoginController {
@@ -21,13 +26,20 @@ public class LoginController {
     private LoginService loginService;
 
     @PostMapping(value = "/login/login")
-    public ApiResponse getOpenid(String jsCode) {
+    public ApiResponse login(String jsCode) {
         User userInfo = loginService.login(jsCode);
         if (userInfo != null) {
-            return ApiResponse.ok(userInfo);
+            String token = genToken(userInfo);
+            return ApiResponse.ok(LoginResponse.builder().user(userInfo).token(token).build());
         } else {
             return ApiResponse.error(-1, "login error");
         }
+    }
+
+    private String genToken(User user) {
+        // use openid to generate token
+        UserDetails userDetails = new org.springframework.security.core.userdetails.User(user.getOpenId(), user.getUserId().toString(), Collections.emptyList());
+        return JwtUtils.generateToken(userDetails);
     }
 
     /**
