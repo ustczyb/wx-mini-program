@@ -1,7 +1,11 @@
 package com.tencent.wxcloudrun.model.DO;
 
+import lombok.Builder;
+import lombok.experimental.Tolerate;
+
 import java.util.Date;
 
+@Builder
 public class MissionProgress {
     private Integer id;
 
@@ -22,6 +26,9 @@ public class MissionProgress {
     private Date ctime;
 
     private Date utime;
+
+    @Tolerate
+    public MissionProgress() {}
 
     public Integer getId() {
         return id;

@@ -2,6 +2,7 @@ package com.tencent.wxcloudrun.controller;
 
 import com.tencent.wxcloudrun.model.DO.Mission;
 import com.tencent.wxcloudrun.model.DO.Task;
+import com.tencent.wxcloudrun.model.DTO.GroupMissionDTO;
 import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
 import com.tencent.wxcloudrun.service.TaskService;
@@ -44,8 +45,8 @@ public class TaskController {
     }
 
     @PostMapping("task/mission")
-    public ApiResponse modifyTaskInfo(Mission mission, Integer targetState) {
-        int modifyRes = taskService.modifyMission(mission, targetState);
+    public ApiResponse modifyTaskInfo(Mission mission) {
+        int modifyRes = taskService.modifyMission(mission);
         if (modifyRes > 0) {
             return ApiResponse.ok();
         } else {
@@ -70,8 +71,8 @@ public class TaskController {
     }
 
     @PutMapping("task/mission")
-    public ApiResponse createMission(Mission task, String userIds) {
-        int createRes = taskService.createMission(task, ConvertUtils.string2idList(userIds));
+    public ApiResponse createMission(Mission mission, String userIds) {
+        int createRes = taskService.createMission(mission, ConvertUtils.string2idList(userIds));
         if (createRes > 0) {
             return ApiResponse.ok();
         } else {
@@ -99,9 +100,29 @@ public class TaskController {
         }
     }
 
+    @GetMapping("user/missionlist")
+    public ApiResponse queryMissionsByUserId(Long userId) {
+        List<GroupMissionDTO> taskList = taskService.queryEffectiveMissionByUserId(userId);
+        if (CollectionUtils.isNotEmpty(taskList)) {
+            return ApiResponse.ok(taskList);
+        } else {
+            return ApiResponse.error(-1, "no result");
+        }
+    }
+
     @GetMapping("user/tasklist")
     public ApiResponse queryByUserId(Long userId) {
         List<GroupTaskDTO> taskList = taskService.queryEffectiveTaskByUserId(userId);
+        if (CollectionUtils.isNotEmpty(taskList)) {
+            return ApiResponse.ok(taskList);
+        } else {
+            return ApiResponse.error(-1, "no result");
+        }
+    }
+
+    @GetMapping("user/missionlist/owner")
+    public ApiResponse queryMissionsByOwnerId(Long userId) {
+        List<GroupMissionDTO> taskList = taskService.queryMissionByOwner(userId);
         if (CollectionUtils.isNotEmpty(taskList)) {
             return ApiResponse.ok(taskList);
         } else {
@@ -116,6 +137,26 @@ public class TaskController {
             return ApiResponse.ok(taskList);
         } else {
             return ApiResponse.error(-1, "no result");
+        }
+    }
+
+    @GetMapping("mission/tasklist")
+    public ApiResponse queryTasksByMission(Long userId, Long missionId) {
+        List<Task> taskList = taskService.queryTasksByMission(userId, missionId);
+        if (CollectionUtils.isNotEmpty(taskList)) {
+            return ApiResponse.ok(taskList);
+        } else {
+            return ApiResponse.error(-1, "query failed!");
+        }
+    }
+
+    @GetMapping("user/missionlist/starttime")
+    public ApiResponse queryMissionByTime(Long userId, @DateTimeFormat(pattern = "yyyy-MM")Date endMonth) {
+        List<Mission> missionList = taskService.queryMissionByMonth(userId, endMonth);
+        if (CollectionUtils.isNotEmpty(missionList)) {
+            return ApiResponse.ok(missionList);
+        } else {
+            return ApiResponse.error(-1, "query failed!");
         }
     }
 

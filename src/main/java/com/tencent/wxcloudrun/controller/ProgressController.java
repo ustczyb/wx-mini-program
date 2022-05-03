@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.model.DO.MissionProgress;
 import com.tencent.wxcloudrun.model.DO.Progress;
 import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
@@ -19,6 +20,14 @@ public class ProgressController {
     private ProgressService progressService;
 
     @GetMapping("mission/progress")
+    public ApiResponse getByMissionAndUser(Long userId, Long missionId) {
+        MissionProgress missionProgress = progressService.queryByUserAndMission(userId, missionId);
+        if (missionProgress != null) {
+            return ApiResponse.ok(missionProgress);
+        } else {
+            return ApiResponse.error(-1, "query failed");
+        }
+    }
 
     @GetMapping("task/progress")
     public ApiResponse getByTaskAndUser(Long userId, Long taskId) {
@@ -41,6 +50,14 @@ public class ProgressController {
     }
 
     @GetMapping("mission/progress/all")
+    public ApiResponse getAllByMissionId(Long missionId) {
+        List<MissionProgress> progressList = progressService.queryByMission(missionId);
+        if (CollectionUtils.isNotEmpty(progressList)) {
+            return ApiResponse.ok(progressList);
+        } else {
+            return ApiResponse.error(-1, "query failed");
+        }
+    }
 
     @GetMapping("task/progress/all")
     public ApiResponse getAllByTaskId(Long taskId) {
@@ -51,8 +68,6 @@ public class ProgressController {
             return ApiResponse.error(-1, "query failed");
         }
     }
-
-    @PostMapping("mission/progress/end")
 
     @PostMapping("task/progress/state/end")
     public ApiResponse modifyToEndState(Long taskId) {
@@ -73,7 +88,15 @@ public class ProgressController {
         }
     }
 
-    @GetMapping("mission/statistic")
+    @GetMapping("mission/progress/statistic")
+    public ApiResponse getStatisticByMission(Long missionId) {
+        ProgressStatisticDTO statisticInfo = progressService.getMissionStatisticInfo(missionId);
+        if (statisticInfo != null) {
+            return ApiResponse.ok(statisticInfo);
+        } else {
+            return ApiResponse.error(-1, "query failed");
+        }
+    }
 
     @GetMapping("task/progress/statistic")
     public ApiResponse getStatisticByTask(Long taskId) {

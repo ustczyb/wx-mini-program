@@ -4,6 +4,7 @@
   <resultMap id="BaseResultMap" type="com.tencent.wxcloudrun.model.DO.Task">
     <id column="id" jdbcType="BIGINT" property="taskId" />
     <result column="group_id" jdbcType="BIGINT" property="groupId" />
+    <result column="mission_id" jdbcType="BIGINT" property="missionId" />
     <result column="create_user_id" jdbcType="BIGINT" property="createUserId" />
     <result column="valid" jdbcType="TINYINT" property="valid" />
     <result column="state" jdbcType="INTEGER" property="state" />
@@ -24,7 +25,7 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, group_id, create_user_id, valid, state, title, `desc`, tags, trigger_type, task_type, expect_start_time,
+    id, group_id, mission_id, create_user_id, valid, state, title, `desc`, tags, trigger_type, task_type, expect_start_time,
     actual_start_time, expect_finished_time, actual_finished_time, bbs_id, ctime, utime
   </sql>
   <sql id="Blob_Column_List">
@@ -79,13 +80,13 @@
     where id = #{taskId,jdbcType=BIGINT}
   </delete>
   <insert id="insert"  useGeneratedKeys="true" keyProperty="taskId" parameterType="com.tencent.wxcloudrun.model.DO.Task">
-    insert into task_table (id, group_id, create_user_id, 
+    insert into task_table (id, group_id, mission_id, create_user_id,
       valid, state, title, `desc`, tags,
       trigger_type, task_type, expect_start_time, 
       actual_start_time, expect_finished_time, 
       actual_finished_time, bbs_id, ctime, 
       utime, content)
-    values (#{taskId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT},
+    values (#{taskId,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{missionId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT},
       #{valid,jdbcType=TINYINT}, #{state,jdbcType=INTEGER}, #{title,jdbcType=VARCHAR}, #{desc,jdbcType=VARCHAR} #{tags,jdbcType=VARCHAR},
       #{triggerType,jdbcType=SMALLINT}, #{taskType,jdbcType=SMALLINT}, #{expectStartTime,jdbcType=TIMESTAMP},
       #{actualStartTime,jdbcType=TIMESTAMP}, #{expectFinishedTime,jdbcType=TIMESTAMP}, 
@@ -100,6 +101,9 @@
       </if>
       <if test="groupId != null">
         group_id,
+      </if>
+      <if test="missionId != null">
+        mission_id,
       </if>
       <if test="createUserId != null">
         create_user_id,
@@ -157,6 +161,9 @@
       <if test="groupId != null">
         #{groupId,jdbcType=BIGINT},
       </if>
+      <if test="missionId != null">
+        #{missionId,jdbcType=BIGINT},
+      </if>
       <if test="createUserId != null">
         #{createUserId,jdbcType=BIGINT},
       </if>
@@ -213,6 +220,9 @@
       <if test="groupId != null">
         group_id = #{groupId,jdbcType=BIGINT},
       </if>
+      <if test="missionId != null">
+        mission_id = #{missionId,jdbcType=BIGINT},
+      </if>
       <if test="createUserId != null">
         create_user_id = #{createUserId,jdbcType=BIGINT},
       </if>
@@ -267,6 +277,7 @@
   <update id="updateByPrimaryKeyWithBLOBs" parameterType="com.tencent.wxcloudrun.model.DO.Task">
     update task_table
     set group_id = #{groupId,jdbcType=BIGINT},
+      mission_id = #{missionId,jdbcType=BIGINT},
       create_user_id = #{createUserId,jdbcType=BIGINT},
       valid = #{valid,jdbcType=TINYINT},
       state = #{state,jdbcType=INTEGER},
@@ -288,6 +299,7 @@
   <update id="updateByPrimaryKey" parameterType="com.tencent.wxcloudrun.model.DO.Task">
     update task_table
     set group_id = #{groupId,jdbcType=BIGINT},
+      mission_id = #{missionId,jdbcType=BIGINT},
       create_user_id = #{createUserId,jdbcType=BIGINT},
       valid = #{valid,jdbcType=TINYINT},
       state = #{state,jdbcType=INTEGER},
@@ -313,4 +325,12 @@
       #{taskIds}
     </foreach>
   </update>
+  <select id="selectByMissionId" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from task_table
+    where mission_id = #{missionId,jdbcType=BIGINT}
+  </select>
 </mapper>

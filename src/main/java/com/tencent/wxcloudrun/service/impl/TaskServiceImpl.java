@@ -1,13 +1,11 @@
 package com.tencent.wxcloudrun.service.impl;
 
-import com.tencent.wxcloudrun.dao.GroupMapper;
-import com.tencent.wxcloudrun.dao.ProgressMapper;
-import com.tencent.wxcloudrun.dao.TaskMapper;
+import com.tencent.wxcloudrun.dao.*;
+import com.tencent.wxcloudrun.enums.MissionProgressStateEnum;
 import com.tencent.wxcloudrun.enums.ProgressStateEnum;
 import com.tencent.wxcloudrun.enums.TaskStateEnum;
-import com.tencent.wxcloudrun.model.DO.Group;
-import com.tencent.wxcloudrun.model.DO.Progress;
-import com.tencent.wxcloudrun.model.DO.Task;
+import com.tencent.wxcloudrun.model.DO.*;
+import com.tencent.wxcloudrun.model.DTO.GroupMissionDTO;
 import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
 import com.tencent.wxcloudrun.model.DTO.TaskProgressDTO;
 import com.tencent.wxcloudrun.service.TaskService;
@@ -20,7 +18,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.*;
 import java.util.stream.Collectors;
-import java.util.stream.IntStream;
 
 @Service
 public class TaskServiceImpl implements TaskService {
@@ -35,6 +32,12 @@ public class TaskServiceImpl implements TaskService {
 
     @Autowired
     private GroupMapper groupMapper;
+
+    @Autowired
+    private MissionMapper missionMapper;
+
+    @Autowired
+    private MissionProgressMapper missionProgressMapper;
 
     @Override
     @Transactional(rollbackFor = {Exception.class})
@@ -154,6 +157,112 @@ public class TaskServiceImpl implements TaskService {
                 .filter(x -> x.getExpectFinishedTime().before(DateUtils.addMonths(DateUtils.truncate(endDate, Calendar.MONTH), 1)))
                 .collect(Collectors.toList());
         return taskList;
+    }
+
+    @Override
+    public Mission queryByMissionId(Long missionId, Long userId) {
+        missionProgressMapper.updateLastViewTime(userId, missionId);
+        return missionMapper.selectByPrimaryKey(missionId);
+    }
+
+    @Override
+    public int modifyMission(Mission mission) {
+        return missionMapper.updateByPrimaryKeySelective(mission);
+    }
+
+    private Mission buildMission(Mission mission) {
+        Date now = new Date();
+        mission.setUtime(now);
+        mission.setCtime(now);
+        mission.setValid((byte) 1);
+        mission.setActualStartTime(now);
+        mission.setState(TaskStateEnum.NOT_BEGIN.getCode());
+        return mission;
+    }
+
+    private MissionProgress buildMissionProgress(Mission mission, Long userId) {
+        Date now = new Date();
+        return MissionProgress.builder()
+                .groupId(mission.getGroupId())
+                .missionId(mission.getId())
+                .lastViewTime(now)
+                .userId(userId)
+                .state((short) ProgressStateEnum.TO_READ.getCode())
+                .ctime(now)
+                .utime(now)
+                .build();
+    }
+
+    @Override
+    @Transactional(rollbackFor = Exception.class)
+    public int createMission(Mission mission, List<Long> userIds) {
+        Mission newMission = buildMission(mission);
+        int insertTaskRes = missionMapper.insertSelective(newMission);
+        for (Long userId : userIds) {
+            MissionProgress progress = buildMissionProgress(newMission, userId);
+            missionProgressMapper.insertSelective(progress);
+        }
+        return insertTaskRes;
+    }
+
+    private GroupMissionDTO buildGroupMissionDTO(Long groupId, Long userId, List<Mission> missions) {
+        Group group = groupMapper.selectByPrimaryKey(groupId);
+        List<Long> missionIdList = missions.stream().map(Mission::getId).collect(Collectors.toList());
+        Map<Long, List<MissionProgress>> progressMap = missionProgressMapper.selectByUserIdAndTaskIds(buildParamMap(userId, missionIdList)).stream().collect(Collectors.groupingBy(MissionProgress::getMissionId));
+        List<GroupMissionDTO.MissionProgressDTO> taskProgressDTOList = missions.stream()
+                .filter(t -> progressMap.get(t.getId()) != null)
+                .map(t -> GroupMissionDTO.MissionProgressDTO.builder()
+                        .mission(t)
+                        .progress(progressMap.get(t.getId()).get(0))
+                        .build())
+                .collect(Collectors.toList());
+        return GroupMissionDTO.builder().group(group).taskList(taskProgressDTOList).build();
+    }
+
+    @Override
+    public List<GroupMissionDTO> queryEffectiveMissionByUserId(Long userId) {
+        // 1.find progresses of user
+        List<MissionProgress> progressList = missionProgressMapper.selectByUserIdProgressList(userId);
+        List<Long> missionIdList = progressList.stream().map(MissionProgress::getMissionId).collect(Collectors.toList());
+        // 2.find corresponding tasks
+        List<Mission> missionList = missionMapper.selectByIds(missionIdList).stream()
+                .filter(p -> !Objects.equals(p.getState(), TaskStateEnum.ENDED.getCode()))
+                .sorted(Comparator.comparing(Mission::getActualStartTime))
+                .collect(Collectors.toList());
+        Map<Long, List<Mission>> groupTaskMap = missionList.stream().filter(x -> x.getState() < MissionProgressStateEnum.ENDED.getCode()).collect(Collectors.groupingBy(Mission::getGroupId));
+        return groupTaskMap.entrySet().stream().map(e -> buildGroupMissionDTO(e.getKey(), userId, e.getValue())).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<GroupMissionDTO> queryMissionByOwner(Long userId) {
+        List<Mission> missionList = missionMapper.selectByCreateUserIdTasks(userId).stream()
+                .filter(p -> !Objects.equals(p.getState(), TaskStateEnum.ENDED.getCode()))
+                .sorted(Comparator.comparing(Mission::getActualStartTime))
+                .collect(Collectors.toList());
+        Map<Long, List<Mission>> groupTaskMap = missionList.stream().filter(x -> x.getState() < MissionProgressStateEnum.ENDED.getCode()).collect(Collectors.groupingBy(Mission::getGroupId));
+        return groupTaskMap.entrySet().stream().map(e -> buildGroupMissionDTO(e.getKey(), userId, e.getValue())).collect(Collectors.toList());
+
+    }
+
+    @Override
+    public List<Mission> queryMissionByMonth(Long userId, Date endDate) {
+        // 1.find progresses of user
+        List<MissionProgress> progressList = missionProgressMapper.selectByUserIdProgressList(userId);
+        List<Long> missionIdList = progressList.stream().map(MissionProgress::getMissionId).collect(Collectors.toList());
+        // 2.find corresponding tasks
+        List<Mission> taskList = missionMapper.selectByIds(missionIdList);
+        taskList = taskList.stream()
+                .filter(x -> x.getActualStartTime().after(DateUtils.truncate(endDate, Calendar.MONTH)))
+                .filter(x -> x.getActualStartTime().before(DateUtils.addMonths(DateUtils.truncate(endDate, Calendar.MONTH), 1)))
+                .collect(Collectors.toList());
+        return taskList;
+    }
+
+    @Override
+    public List<Task> queryTasksByMission(Long userId, Long missionId) {
+        Mission mission = missionMapper.selectByPrimaryKey(missionId);
+        return taskMapper.selectByMissionId(mission.getId());
     }
 
 }

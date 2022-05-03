@@ -10,6 +10,8 @@ public class Task {
 
     private Long groupId;
 
+    private Long missionId;
+
     private Long createUserId;
 
     private Byte valid;
@@ -64,6 +66,14 @@ public class Task {
 
     public void setGroupId(Long groupId) {
         this.groupId = groupId;
+    }
+
+    public Long getMissionId() {
+        return missionId;
+    }
+
+    public void setMissionId(Long missionId) {
+        this.missionId = missionId;
     }
 
     public Long getCreateUserId() {

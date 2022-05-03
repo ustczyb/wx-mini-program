@@ -20,7 +20,7 @@
     <result column="content" jdbcType="LONGVARCHAR" property="content" />
   </resultMap>
   <sql id="Base_Column_List">
-    id, group_id, create_user_id, valid, state, title, tags, desc, actual_start_time, 
+    id, group_id, create_user_id, valid, `state`, title, tags, `desc`, actual_start_time,
     actual_finished_time, bbs_id, ctime, utime
   </sql>
   <sql id="Blob_Column_List">
@@ -41,7 +41,7 @@
   <insert id="insert" parameterType="com.tencent.wxcloudrun.model.DO.Mission">
     insert into mission_table (id, group_id, create_user_id, 
       valid, state, title, 
-      tags, desc, actual_start_time, 
+      tags, `desc`, actual_start_time,
       actual_finished_time, bbs_id, ctime, 
       utime, content)
     values (#{id,jdbcType=BIGINT}, #{groupId,jdbcType=BIGINT}, #{createUserId,jdbcType=BIGINT}, 
@@ -50,7 +50,7 @@
       #{actualFinishedTime,jdbcType=TIMESTAMP}, #{bbsId,jdbcType=BIGINT}, #{ctime,jdbcType=TIMESTAMP}, 
       #{utime,jdbcType=TIMESTAMP}, #{content,jdbcType=LONGVARCHAR})
   </insert>
-  <insert id="insertSelective" parameterType="com.tencent.wxcloudrun.model.DO.Mission">
+  <insert id="insertSelective" useGeneratedKeys="true" keyProperty="id" parameterType="com.tencent.wxcloudrun.model.DO.Mission">
     insert into mission_table
     <trim prefix="(" suffix=")" suffixOverrides=",">
       <if test="id != null">
@@ -75,7 +75,7 @@
         tags,
       </if>
       <if test="desc != null">
-        desc,
+        `desc`,
       </if>
       <if test="actualStartTime != null">
         actual_start_time,
@@ -163,7 +163,7 @@
         tags = #{tags,jdbcType=VARCHAR},
       </if>
       <if test="desc != null">
-        desc = #{desc,jdbcType=VARCHAR},
+        `desc` = #{desc,jdbcType=VARCHAR},
       </if>
       <if test="actualStartTime != null">
         actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
@@ -194,7 +194,7 @@
       state = #{state,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
       actual_finished_time = #{actualFinishedTime,jdbcType=TIMESTAMP},
       bbs_id = #{bbsId,jdbcType=BIGINT},
@@ -211,7 +211,7 @@
       state = #{state,jdbcType=INTEGER},
       title = #{title,jdbcType=VARCHAR},
       tags = #{tags,jdbcType=VARCHAR},
-      desc = #{desc,jdbcType=VARCHAR},
+      `desc` = #{desc,jdbcType=VARCHAR},
       actual_start_time = #{actualStartTime,jdbcType=TIMESTAMP},
       actual_finished_time = #{actualFinishedTime,jdbcType=TIMESTAMP},
       bbs_id = #{bbsId,jdbcType=BIGINT},
@@ -219,4 +219,27 @@
       utime = #{utime,jdbcType=TIMESTAMP}
     where id = #{id,jdbcType=BIGINT}
   </update>
+
+  <select id="selectByIds" parameterType="java.util.List" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mission_table
+    where id in
+    <foreach collection="list" item="ids" open="(" separator="," close=")">
+      #{ids}
+    </foreach>
+  </select>
+
+  <select id="selectByCreateUserIdTasks" parameterType="java.lang.Long" resultMap="ResultMapWithBLOBs">
+    select
+    <include refid="Base_Column_List" />
+    ,
+    <include refid="Blob_Column_List" />
+    from mission_table
+    where create_user_id = #{createUserId,jdbcType=BIGINT}
+    and state in (100, 200)
+  </select>
+
 </mapper>

@@ -32,4 +32,6 @@ public interface TaskMapper {
     List<Task> queryByGroupIdTasks(Long groupId);
 
     List<Task> queryByEnddate(@Param("startTime")Date startTime, @Param("endTime") Date endTime);
+
+    List<Task> selectByMissionId(Long missionId);
 }

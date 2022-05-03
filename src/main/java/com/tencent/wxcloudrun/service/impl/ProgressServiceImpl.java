@@ -1,11 +1,16 @@
 package com.tencent.wxcloudrun.service.impl;
 
 import com.tencent.wxcloudrun.annotation.TaskStateCheck;
+import com.tencent.wxcloudrun.dao.MissionMapper;
+import com.tencent.wxcloudrun.dao.MissionProgressMapper;
 import com.tencent.wxcloudrun.dao.ProgressMapper;
 import com.tencent.wxcloudrun.dao.TaskMapper;
 import com.tencent.wxcloudrun.enums.ProgressStateEnum;
 import com.tencent.wxcloudrun.enums.TaskStateEnum;
+import com.tencent.wxcloudrun.model.DO.Mission;
+import com.tencent.wxcloudrun.model.DO.MissionProgress;
 import com.tencent.wxcloudrun.model.DO.Progress;
+import com.tencent.wxcloudrun.model.DO.Task;
 import com.tencent.wxcloudrun.model.DTO.ProgressStatisticDTO;
 import com.tencent.wxcloudrun.service.ProgressService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -13,6 +18,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.Collections;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
@@ -26,6 +32,12 @@ public class ProgressServiceImpl implements ProgressService {
     @Autowired
     private TaskMapper taskMapper;
 
+    @Autowired
+    private MissionMapper missionMapper;
+
+    @Autowired
+    private MissionProgressMapper missionProgressMapper;
+
     @Override
     public List<Progress> queryByUserAndTask(Long userId, Long taskId) {
         return progressMapper.selectByUserIdAndTaskIdProgressList(userId, taskId);
@@ -36,10 +48,29 @@ public class ProgressServiceImpl implements ProgressService {
         return progressMapper.selectByTaskIdProgressList(taskId);
     }
 
+    private Map<String, Object> buildParamMap(Long userId, List<Long> taskIdList) {
+        Map<String, Object> paramMap = new HashMap<>(2);
+        paramMap.put("userId", userId);
+        paramMap.put("taskIds", taskIdList);
+        return paramMap;
+    }
+
     @Override
     @TaskStateCheck
+    @Transactional(rollbackFor = Exception.class)
     public int modifyProgressState(Long userId, Long taskId, Integer targetState) {
-        return progressMapper.updateStateByUserIdAndTaskId(userId, taskId, null, targetState);
+        int res = progressMapper.updateStateByUserIdAndTaskId(userId, taskId, null, targetState);
+        Task task = taskMapper.selectByPrimaryKey(taskId);
+        Mission mission = missionMapper.selectByPrimaryKey(task.getMissionId());
+        MissionProgress missionProgress = missionProgressMapper.selectByUserIdAndMissionIdProgressList(userId, task.getMissionId());
+        List<Task> tasks = taskMapper.selectByMissionId(task.getMissionId());
+        List<Progress> progresses = progressMapper.selectByUserIdAndTaskIds(buildParamMap(userId, tasks.stream().map(Task::getTaskId).collect(Collectors.toList())));
+        short missionProgressState = progresses.stream().map(Progress::getState).min(Short::compareTo).get();
+        if (missionProgressState > missionProgress.getState()) {
+            missionProgress.setState(missionProgressState);
+            missionProgressMapper.updateByPrimaryKeySelective(missionProgress);
+        }
+        return res;
     }
 
     @Override
@@ -64,6 +95,23 @@ public class ProgressServiceImpl implements ProgressService {
         List<Progress> progressList = progressMapper.selectByTaskIdProgressList(taskId);;
         Map<Short, Long> countMap = progressList.stream().collect(Collectors.groupingBy(Progress::getState, Collectors.counting()));;
         return ProgressStatisticDTO.builder().taskId(taskId).countMap(countMap).build();
+    }
+
+    @Override
+    public MissionProgress queryByUserAndMission(Long userId, Long missionId) {
+        return missionProgressMapper.selectByUserIdAndMissionIdProgressList(userId, missionId);
+    }
+
+    @Override
+    public List<MissionProgress> queryByMission(Long missionId) {
+        return missionProgressMapper.selectByMissionIdProgressList(missionId);
+    }
+
+    @Override
+    public ProgressStatisticDTO getMissionStatisticInfo(Long missionId) {
+        List<MissionProgress> progressList = missionProgressMapper.selectByMissionIdProgressList(missionId);
+        Map<Short, Long> countMap = progressList.stream().collect(Collectors.groupingBy(MissionProgress::getState, Collectors.counting()));;
+        return ProgressStatisticDTO.builder().taskId(missionId).countMap(countMap).build();
     }
 
 
