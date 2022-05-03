@@ -18,10 +18,6 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import java.io.IOException;
 
-/**
- * @author james mu
- * @date 2020/9/7 19:14
- */
 @Slf4j
 @Component
 public class JwtRequestFilter extends OncePerRequestFilter {

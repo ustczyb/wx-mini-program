@@ -1,5 +1,6 @@
 package com.tencent.wxcloudrun.controller;
 
+import com.tencent.wxcloudrun.model.DO.Mission;
 import com.tencent.wxcloudrun.model.DO.Task;
 import com.tencent.wxcloudrun.model.DTO.GroupTaskDTO;
 import com.tencent.wxcloudrun.model.common.ApiResponse;
@@ -22,6 +23,16 @@ public class TaskController {
     @Autowired
     private TaskService taskService;
 
+    @GetMapping("task/mission")
+    public ApiResponse queryByMissionId(Long missionId, Long userId) {
+        Mission mission = taskService.queryByMissionId(missionId, userId);
+        if (mission != null) {
+            return ApiResponse.ok(mission);
+        } else {
+            return ApiResponse.error(-1, "query task failed!");
+        }
+    }
+
     @GetMapping("task/task")
     public ApiResponse queryByTaskId(Long taskId, Long userId) {
         Task task = taskService.queryByTaskId(taskId, userId);
@@ -29,6 +40,16 @@ public class TaskController {
             return ApiResponse.ok(task);
         } else {
             return ApiResponse.error(-1, "query task failed!");
+        }
+    }
+
+    @PostMapping("task/mission")
+    public ApiResponse modifyTaskInfo(Mission mission, Integer targetState) {
+        int modifyRes = taskService.modifyMission(mission, targetState);
+        if (modifyRes > 0) {
+            return ApiResponse.ok();
+        } else {
+            return ApiResponse.error(-1, "create task failed!");
         }
     }
 
@@ -48,8 +69,18 @@ public class TaskController {
         return ApiResponse.ok();
     }
 
+    @PutMapping("task/mission")
+    public ApiResponse createMission(Mission task, String userIds) {
+        int createRes = taskService.createMission(task, ConvertUtils.string2idList(userIds));
+        if (createRes > 0) {
+            return ApiResponse.ok();
+        } else {
+            return ApiResponse.error(-1, "create task failed!");
+        }
+    }
+
     @PutMapping("task/task")
-    public ApiResponse createTask(Task task, String userIds) {
+    public ApiResponse createMission(Task task, String userIds) {
         int createRes = taskService.createTask(task, ConvertUtils.string2idList(userIds));
         if (createRes > 0) {
             return ApiResponse.ok();
