@@ -265,4 +265,10 @@ public class TaskServiceImpl implements TaskService {
         return taskMapper.selectByMissionId(mission.getId());
     }
 
+    @Override
+    public GroupMissionDTO queryMissionsByGroupId(Long groupId, Long userId) {
+        List<Mission> missionList = missionMapper.queryByGroupIdMissions(groupId);
+        return buildGroupMissionDTO(groupId, userId, missionList);
+    }
+
 }

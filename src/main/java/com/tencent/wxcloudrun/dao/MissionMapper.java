@@ -24,4 +24,6 @@ public interface MissionMapper {
     List<Mission> selectByIds(List<Long> missionIdList);
 
     List<Mission> selectByCreateUserIdTasks(Long userId);
+
+    List<Mission> queryByGroupIdMissions(Long groupId);
 }

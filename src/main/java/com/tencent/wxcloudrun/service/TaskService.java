@@ -37,4 +37,6 @@ public interface TaskService {
     List<Mission> queryMissionByMonth(Long userId, Date endMonth);
 
     List<Task> queryTasksByMission(Long userId, Long missionId);
+
+    GroupMissionDTO queryMissionsByGroupId(Long groupId, Long userId);
 }

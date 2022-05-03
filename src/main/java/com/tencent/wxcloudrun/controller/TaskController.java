@@ -90,6 +90,16 @@ public class TaskController {
         }
     }
 
+    @GetMapping("group/missionlist")
+    public ApiResponse queryMissionByGroupId(Long groupId, Long userId) {
+        GroupMissionDTO groupMissionDTO = taskService.queryMissionsByGroupId(groupId, userId);
+        if (groupMissionDTO != null) {
+            return ApiResponse.ok(groupMissionDTO.getTaskList());
+        } else {
+            return ApiResponse.error(-1, "no result");
+        }
+    }
+
     @GetMapping("group/tasklist")
     public ApiResponse queryByGroupId(Long groupId, Long userId) {
         GroupTaskDTO groupTaskDTO = taskService.queryByGroupId(groupId, userId);
